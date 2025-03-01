@@ -1,18 +1,31 @@
 "use client";
 
-import { useState, useEffect } from 'react';
-import { useSearchParams } from 'next/navigation';
-import Link from 'next/link';
-import { QRCodeSVG } from 'qrcode.react';
-import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Input } from '@/components/ui/input';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
-import { GraduationCap, ArrowLeft, Calendar, Download } from 'lucide-react';
-import { format } from 'date-fns';
-import { getUserById, getUserByRollNumber } from '@/app/actions/user';
-import { useToast } from '@/hooks/use-toast';
+import { useState, useEffect } from "react";
+import { useSearchParams } from "next/navigation";
+import Link from "next/link";
+import { QRCodeSVG } from "qrcode.react";
+import { Button } from "@/components/ui/button";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
+import { GraduationCap, ArrowLeft, Calendar, Download } from "lucide-react";
+import { format } from "date-fns";
+import { getUserById, getUserByRollNumber } from "@/app/actions/user";
+import { useToast } from "@/hooks/use-toast";
 
 interface User {
   id: string;
@@ -28,12 +41,12 @@ interface User {
 
 export default function DashboardPage() {
   const searchParams = useSearchParams();
-  const userId = searchParams.get('userId');
+  const userId = searchParams.get("userId");
   const { toast } = useToast();
-  
-  const [user, setUser] = useState<User | null>(null);
+
+  const [user, setUser] = useState<User | null | undefined>(null);
   const [loading, setLoading] = useState(true);
-  const [rollNumber, setRollNumber] = useState('');
+  const [rollNumber, setRollNumber] = useState("");
   const [searchLoading, setSearchLoading] = useState(false);
 
   useEffect(() => {
@@ -79,8 +92,8 @@ export default function DashboardPage() {
 
     setSearchLoading(true);
     const result = await getUserByRollNumber(rollNumber);
-    
-    if (result.success) {
+
+    if (result.success && result.user) {
       setUser(result.user);
       toast({
         title: "Success",
@@ -98,10 +111,10 @@ export default function DashboardPage() {
 
   // const downloadQR = () => {
   //   if (!user) return;
-    
+
   //   const canvas = document.getElementById('qr-code-canvas') as HTMLCanvasElement;
   //   if (!canvas) return;
-    
+
   //   const url = canvas.toDataURL('image/png');
   //   const link = document.createElement('a');
   //   link.href = url;
@@ -112,33 +125,33 @@ export default function DashboardPage() {
   // };
   const downloadQR = () => {
     if (!user) return;
-  
-    const svg = document.querySelector('#qr-code-svg') as SVGElement;
+
+    const svg = document.querySelector("#qr-code-svg") as SVGElement;
     if (!svg) return;
-  
+
     const serializer = new XMLSerializer();
     const svgData = serializer.serializeToString(svg);
-    const canvas = document.createElement('canvas');
-    const ctx = canvas.getContext('2d');
+    const canvas = document.createElement("canvas");
+    const ctx = canvas.getContext("2d");
     const img = new Image();
-  
+
     img.onload = () => {
       canvas.width = img.width;
       canvas.height = img.height;
       ctx?.drawImage(img, 0, 0);
-  
-      const url = canvas.toDataURL('image/png');
-      const link = document.createElement('a');
+
+      const url = canvas.toDataURL("image/png");
+      const link = document.createElement("a");
       link.href = url;
       link.download = `qr-code-${user.rollNumber}.png`;
       document.body.appendChild(link);
       link.click();
       document.body.removeChild(link);
     };
-  
-    img.src = 'data:image/svg+xml;base64,' + btoa(svgData);
+
+    img.src = "data:image/svg+xml;base64," + btoa(svgData);
   };
-  
+
   return (
     <div className="min-h-screen bg-background flex flex-col">
       <header className="border-b">
@@ -161,7 +174,9 @@ export default function DashboardPage() {
           <Card className="max-w-md mx-auto">
             <CardHeader>
               <CardTitle>Find Your Dashboard</CardTitle>
-              <CardDescription>Enter your roll number to access your dashboard</CardDescription>
+              <CardDescription>
+                Enter your roll number to access your dashboard
+              </CardDescription>
             </CardHeader>
             <CardContent>
               <div className="flex space-x-2">
@@ -171,7 +186,7 @@ export default function DashboardPage() {
                   onChange={(e) => setRollNumber(e.target.value)}
                 />
                 <Button onClick={handleSearch} disabled={searchLoading}>
-                  {searchLoading ? 'Searching...' : 'Search'}
+                  {searchLoading ? "Searching..." : "Search"}
                 </Button>
               </div>
             </CardContent>
@@ -183,7 +198,7 @@ export default function DashboardPage() {
         ) : user ? (
           <div className="max-w-4xl mx-auto">
             <h2 className="text-2xl font-bold mb-6">Student Dashboard</h2>
-            
+
             <div className="grid md:grid-cols-3 gap-6 mb-8">
               <Card>
                 <CardHeader>
@@ -192,34 +207,42 @@ export default function DashboardPage() {
                 <CardContent>
                   <dl className="space-y-2">
                     <div>
-                      <dt className="text-sm font-medium text-muted-foreground">Name</dt>
-                      <dd>{user.name}</dd>
+                      <dt className="text-sm font-medium text-muted-foreground">
+                        Name
+                      </dt>
+                      {user && <div>{user.name}</div>}
                     </div>
                     <div>
-                      <dt className="text-sm font-medium text-muted-foreground">Roll Number</dt>
+                      <dt className="text-sm font-medium text-muted-foreground">
+                        Roll Number
+                      </dt>
                       <dd>{user.rollNumber}</dd>
                     </div>
                     <div>
-                      <dt className="text-sm font-medium text-muted-foreground">Email</dt>
+                      <dt className="text-sm font-medium text-muted-foreground">
+                        Email
+                      </dt>
                       <dd className="truncate">{user.email}</dd>
                     </div>
                   </dl>
                 </CardContent>
               </Card>
-              
+
               <Card className="md:col-span-2">
                 <CardHeader>
                   <CardTitle>Your QR Code</CardTitle>
-                  <CardDescription>Scan this code to mark your attendance</CardDescription>
+                  <CardDescription>
+                    Scan this code to mark your attendance
+                  </CardDescription>
                 </CardHeader>
                 <CardContent className="flex flex-col items-center">
                   <div className="bg-white p-4 rounded-lg mb-4">
                     <QRCodeSVG
-                       id="qr-code-svg"
-                       value={user.qrCode}
-                       size={200}
-                       level="H"
-                       includeMargin={true}
+                      id="qr-code-svg"
+                      value={user.qrCode}
+                      size={200}
+                      level="H"
+                      includeMargin={true}
                     />
                   </div>
                   <Button variant="outline" onClick={downloadQR}>
@@ -229,12 +252,12 @@ export default function DashboardPage() {
                 </CardContent>
               </Card>
             </div>
-            
+
             <Tabs defaultValue="attendance">
               <TabsList className="mb-4">
                 <TabsTrigger value="attendance">Attendance History</TabsTrigger>
               </TabsList>
-              
+
               <TabsContent value="attendance">
                 <Card>
                   <CardHeader>
@@ -258,7 +281,9 @@ export default function DashboardPage() {
                         <TableBody>
                           {user.attendance.map((record, index) => (
                             <TableRow key={index}>
-                              <TableCell>{format(new Date(record.date), 'PPP')}</TableCell>
+                              <TableCell>
+                                {format(new Date(record.date), "PPP")}
+                              </TableCell>
                               <TableCell>
                                 <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800 dark:bg-green-800 dark:text-green-100">
                                   Present

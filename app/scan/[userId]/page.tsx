@@ -15,7 +15,8 @@ export default function ScanPage({ params }: { params: { userId: string } }) {
   const [loading, setLoading] = useState(true);
   const [result, setResult] = useState<{
     success: boolean;
-    message: string;
+    message?: string;
+    error?:string;
     user?: {
       name: string;
       rollNumber: string;
@@ -26,7 +27,10 @@ export default function ScanPage({ params }: { params: { userId: string } }) {
     async function processAttendance() {
       try {
         const result = await markAttendance(params.userId);
-        setResult(result);
+     
+
+          setResult(result);
+   
       } catch (error) {
         setResult({
           success: false,
