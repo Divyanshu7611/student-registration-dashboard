@@ -106,41 +106,116 @@ export async function getUserByRollNumber(rollNumber: string) {
   }
 }
 
+// export async function markAttendance(userId: string) {
+//   try {
+//     await connectToDatabase();
+//     const token = cookies().get('auth-token')?.value;
+//     if (!token) {
+      
+//       return { success: false, error: 'Unauthorized access' };
+//     }
+
+//     const decodedToken: any = jwt.decode(token);
+//     if (decodedToken?.role !== 'admin') {
+      
+//       return { success: false, error: 'Unauthorized access' };
+//     }
+
+    
+//     const user = await User.findOne({qrCode: `${process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000'}/scan/${userId}`});
+//     if (!user) {
+//       return { success: false, error: 'User not found' };
+//     }
+    
+//     // Get today's date (without time)
+//     const today = new Date().toISOString();
+//     today.setHours(0, 0, 0, 0);
+    
+//     // Check if attendance already marked for today
+//     const attendanceToday = user.attendance.find((a:any) => {
+//       const attendanceDate = new Date(a.date);
+//       attendanceDate.setHours(0, 0, 0, 0);
+//       return attendanceDate.getTime() === today.getTime();
+//     });
+    
+//     if (attendanceToday) {
+//       return { 
+//         success: true, 
+//         message: 'Attendance already marked for today',
+//         user: {
+//           id: user._id.toString(),
+//           name: user.name,
+//           rollNumber: user.rollNumber
+//         }
+//       };
+//     }
+    
+//     // Mark attendance
+//     user.attendance.push({
+//       date: new Date().toISOString(),
+//       present: true
+//     });
+    
+//     await user.save();
+//     revalidatePath('/admin/scanner');
+    
+//     return { 
+//       success: true, 
+//       message: 'Attendance marked successfully',
+//       user: {
+//         id: user._id.toString(),
+//         name: user.name,
+//         rollNumber: user.rollNumber
+//       }
+//     };
+//   } catch (error) {
+//     console.error('Error marking attendance:', error);
+//     return { success: false, error: 'Failed to mark attendance' };
+//   }
+// }
+
+
+import { toZonedTime, format } from "date-fns-tz";
+
+const indiaTimeZone = "Asia/Kolkata"; // IST
+
 export async function markAttendance(userId: string) {
   try {
     await connectToDatabase();
     const token = cookies().get('auth-token')?.value;
     if (!token) {
-      
       return { success: false, error: 'Unauthorized access' };
     }
 
     const decodedToken: any = jwt.decode(token);
     if (decodedToken?.role !== 'admin') {
-      
       return { success: false, error: 'Unauthorized access' };
     }
 
-    
-    const user = await User.findOne({qrCode: `${process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000'}/scan/${userId}`});
+    const user = await User.findOne({
+      qrCode: `${process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000'}/scan/${userId}`
+    });
+
     if (!user) {
       return { success: false, error: 'User not found' };
     }
-    
-    // Get today's date (without time)
-    const today = new Date();
-    today.setHours(0, 0, 0, 0);
-    
-    // Check if attendance already marked for today
-    const attendanceToday = user.attendance.find((a:any) => {
-      const attendanceDate = new Date(a.date);
-      attendanceDate.setHours(0, 0, 0, 0);
-      return attendanceDate.getTime() === today.getTime();
+
+    // ✅ Convert today's date to IST (without time)
+    const todayIST = format(toZonedTime(new Date(), indiaTimeZone), 'yyyy-MM-dd');
+
+    // ✅ Check if attendance is already marked for today
+    const attendanceToday = user.attendance.find((a: any) => {
+      const attendanceDateIST = format(
+        toZonedTime(new Date(a.date), indiaTimeZone),
+        'yyyy-MM-dd'
+      );
+
+      return attendanceDateIST === todayIST; // Compare only the date part
     });
-    
+
     if (attendanceToday) {
-      return { 
-        success: true, 
+      return {
+        success: true,
         message: 'Attendance already marked for today',
         user: {
           id: user._id.toString(),
@@ -149,18 +224,18 @@ export async function markAttendance(userId: string) {
         }
       };
     }
-    
-    // Mark attendance
+
+    // ✅ Store attendance date in UTC (safe for database)
     user.attendance.push({
-      date: today,
+      date: new Date().toISOString(),
       present: true
     });
-    
+
     await user.save();
     revalidatePath('/admin/scanner');
-    
-    return { 
-      success: true, 
+
+    return {
+      success: true,
       message: 'Attendance marked successfully',
       user: {
         id: user._id.toString(),
@@ -173,6 +248,7 @@ export async function markAttendance(userId: string) {
     return { success: false, error: 'Failed to mark attendance' };
   }
 }
+
 
 export async function getAllUsers() {
   try {
