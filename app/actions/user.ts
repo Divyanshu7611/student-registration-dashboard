@@ -7,7 +7,6 @@ import { cookies } from 'next/headers';
 import { generateToken } from '@/lib/auth';
 import { any } from 'zod';
 import jwt from 'jsonwebtoken';
-import { useToast } from '@/hooks/use-toast';
 
 export async function registerUser(userData: { name: string; email: string; rollNumber: string }) {
   try {
@@ -110,7 +109,6 @@ export async function getUserByRollNumber(rollNumber: string) {
 export async function markAttendance(userId: string) {
   try {
     await connectToDatabase();
-    const { toast } = useToast();
     const token = cookies().get('auth-token')?.value;
     if (!token) {
       
