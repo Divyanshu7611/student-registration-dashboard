@@ -1,14 +1,18 @@
 "use client";
-import { useEffect, useState } from 'react';
-import { useRouter } from 'next/navigation';
-import Link from 'next/link';
-import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { GraduationCap, ArrowLeft, CheckCircle, XCircle } from 'lucide-react';
-import { markAttendance } from '@/app/actions/user';
-import { useToast } from '@/hooks/use-toast';
-import { error } from 'console';
-// import { error } from 'console';
+import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
+import Link from "next/link";
+import { Button } from "@/components/ui/button";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { GraduationCap, ArrowLeft, CheckCircle, XCircle } from "lucide-react";
+import { markAttendance } from "@/app/actions/user";
+import { useToast } from "@/hooks/use-toast";
 
 export default function ScanPage({ params }: { params: { userId: string } }) {
   const router = useRouter();
@@ -17,7 +21,7 @@ export default function ScanPage({ params }: { params: { userId: string } }) {
   const [result, setResult] = useState<{
     success: boolean;
     message?: string;
-    error?:string;
+    error?: string;
     user?: {
       name: string;
       rollNumber: string;
@@ -28,29 +32,29 @@ export default function ScanPage({ params }: { params: { userId: string } }) {
     async function processAttendance() {
       try {
         const result = await markAttendance(params.userId);
-        if(result.error){
-          if(result.error === 'Unauthorized access'){
+        if (result.error) {
+          if (result.error === "Unauthorized access") {
             toast({
-              title: 'BKL BHAG JHA YHA SE',
-              description: 'Unauthorized access',
+              title: "NIKAL BKL YHA SE",
+              description: "Unauthorized access",
             });
-            router.push('/login');
+            router.push("/login");
           }
-          throw new Error(result.error);
-        }
           setResult(result);
-   
-      } catch (err:any) {
-        if(err.message === 'Unauthorized access') {
+          return;
+        }
+        setResult(result);
+      } catch (err: any) {
+        if (err.message === "Unauthorized access") {
           toast({
-            title: 'BKL BHAG JHA YHA SE',
-            description: 'Unauthorized access',
+            title: "BKL BHAG JHA YHA SE",
+            description: "Unauthorized access",
           });
-          router.push('/login');
+          router.push("/login");
         }
         setResult({
           success: false,
-          message: 'Failed to process attendance. Please try again.',
+          message: "Failed to process attendance. Please try again.",
         });
       } finally {
         setLoading(false);
@@ -80,7 +84,9 @@ export default function ScanPage({ params }: { params: { userId: string } }) {
       <main className="flex-1 container mx-auto px-4 py-8 flex items-center justify-center">
         <Card className="w-full max-w-md">
           <CardHeader>
-            <CardTitle className="text-center">Attendance Verification</CardTitle>
+            <CardTitle className="text-center">
+              Attendance Verification
+            </CardTitle>
             <CardDescription className="text-center">
               Processing your attendance
             </CardDescription>
@@ -100,17 +106,21 @@ export default function ScanPage({ params }: { params: { userId: string } }) {
                   )}
                 </div>
                 <h3 className="text-xl font-semibold mb-2">
-                  {result.success ? 'Success!' : 'Error!'}
+                  {result.success ? "Success!" : "Error!"}
                 </h3>
                 <p className="mb-4">{result.message}</p>
-                
+
                 {result.user && (
                   <div className="bg-muted p-4 rounded-lg mb-4 text-left">
-                    <p><strong>Name:</strong> {result.user.name}</p>
-                    <p><strong>Roll Number:</strong> {result.user.rollNumber}</p>
+                    <p>
+                      <strong>Name:</strong> {result.user.name}
+                    </p>
+                    <p>
+                      <strong>Roll Number:</strong> {result.user.rollNumber}
+                    </p>
                   </div>
                 )}
-                
+
                 <div className="flex justify-center">
                   <Link href="/">
                     <Button>Return to Home</Button>
@@ -119,11 +129,11 @@ export default function ScanPage({ params }: { params: { userId: string } }) {
               </div>
             ) : (
               <div className="text-center py-8 text-muted-foreground">
-                {result== 'Unauthorized access' ? (
-                  <p>BKL NIKAL JA YHA SE</p>
+                {(result as any)?.error === "Unauthorized access" ? (
+                  <p className="text-red-500 font-bold">NIKAL BKL YHA SE</p>
                 ) : (
                   <p>Something Went Wrong</p>
-                )}  
+                )}
               </div>
             )}
           </CardContent>
