@@ -5,6 +5,7 @@ import { useSearchParams } from "next/navigation";
 import Link from "next/link";
 import { QRCodeSVG } from "qrcode.react";
 import { Button } from "@/components/ui/button";
+import { toZonedTime } from "date-fns-tz";
 import {
   Card,
   CardContent,
@@ -152,9 +153,7 @@ export default function DashboardPage() {
     img.src = "data:image/svg+xml;base64," + btoa(svgData);
   };
 
-  function utcToZonedTime(arg0: Date, arg1: string): any {
-    throw new Error("Function not implemented.");
-  }
+
 
   return (
     <div className="min-h-screen bg-background flex flex-col">
@@ -286,7 +285,7 @@ export default function DashboardPage() {
                           {user.attendance.map((record, index) => (
                             <TableRow key={index}>
                               <TableCell>
-                              {format(utcToZonedTime(new Date(record.date), "Asia/Kolkata"), "PPP")}
+                              {format(toZonedTime(new Date(record.date), "Asia/Kolkata"), "PPP")}
                               </TableCell>
                               <TableCell>
                                 <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800 dark:bg-green-800 dark:text-green-100">
