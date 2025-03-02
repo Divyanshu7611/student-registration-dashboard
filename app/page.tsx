@@ -40,8 +40,8 @@ export default function Home() {
             </div>
           </section>
 
-          <div className="grid md:grid-cols-2 gap-6">
-            <Card>
+          <div className="grid md:grid-cols-1 gap-6">
+            {/* <Card>
               <CardHeader>
                 <CardTitle>Register</CardTitle>
                 <CardDescription>Create your student profile</CardDescription>
@@ -54,7 +54,7 @@ export default function Home() {
                   <Button className="w-full">Register</Button>
                 </Link>
               </CardFooter>
-            </Card>
+            </Card> */}
 
            
 
