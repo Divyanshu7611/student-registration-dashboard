@@ -31,11 +31,11 @@ export default function Home() {
               Streamline attendance tracking for placement activities with our QR code system
             </p>
             <div className="flex flex-col sm:flex-row justify-center gap-4">
-              <Link href="/register">
+              {/* <Link href="/register">
                 <Button size="lg" className="w-full sm:w-auto">Register Now</Button>
-              </Link>
+              </Link> */}
               <Link href="/login">
-                <Button size="lg" variant="outline" className="w-full sm:w-auto">Admin Access</Button>
+                <Button size="lg" className="w-full sm:w-auto">Admin Access</Button>
               </Link>
             </div>
           </section>
