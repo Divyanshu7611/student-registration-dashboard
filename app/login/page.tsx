@@ -14,7 +14,7 @@ import { GraduationCap, ArrowLeft, Lock } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import { adminLogin } from '@/app/actions/user';
 import { getTokenFromCookies } from '@/lib/auth';
-import { cookies } from 'next/headers';
+import { useEffect } from 'react';
 
 const formSchema = z.object({
   username: z.string().min(1, { message: 'Username is required' }),
@@ -22,14 +22,21 @@ const formSchema = z.object({
 });
 
 export default function LoginPage() {
+  const [token, setToken] = useState("");
+
+  useEffect(() => {
+    async function fetchToken() {
+      const res = await fetch("/api/token");
+      const data = await res.json();
+      setToken(data.token);
+      if(data.token) {
+        router.push('/admin/scanner');
+      }
+
+    }
+    fetchToken();
+  }, []);
   const router = useRouter();
-  // const token = getTokenFromCookies();
-  const cookieStore = cookies();
-  const token =  cookieStore.get('auth-token')?.value;
-  if(token) {
-    const router = useRouter();
-    router.push('/admin/scanner');
-  }
   const { toast } = useToast();
   const [isSubmitting, setIsSubmitting] = useState(false);
 
