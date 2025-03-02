@@ -12,14 +12,14 @@ export default function Home() {
             <GraduationCap className="h-6 w-6" />
             <h1 className="text-xl font-bold">Placement Cell</h1>
           </div>
-          <nav className="flex space-x-4">
+          {/* <nav className="flex space-x-4">
             <Link href="/login">
               <Button variant="outline">Admin Login</Button>
             </Link>
             <Link href="/register">
               <Button>Register</Button>
             </Link>
-          </nav>
+          </nav> */}
         </div>
       </header>
 
@@ -40,7 +40,7 @@ export default function Home() {
             </div>
           </section>
 
-          <div className="grid md:grid-cols-3 gap-6">
+          <div className="grid md:grid-cols-2 gap-6">
             <Card>
               <CardHeader>
                 <CardTitle>Register</CardTitle>
@@ -56,24 +56,11 @@ export default function Home() {
               </CardFooter>
             </Card>
 
-            <Card>
-              <CardHeader>
-                <CardTitle>QR Code</CardTitle>
-                <CardDescription>Your digital ID</CardDescription>
-              </CardHeader>
-              <CardContent>
-                <p>Get your personalized QR code that will be used to mark your attendance.</p>
-              </CardContent>
-              <CardFooter>
-                <Link href="/dashboard" className="w-full">
-                  <Button variant="outline" className="w-full">View QR</Button>
-                </Link>
-              </CardFooter>
-            </Card>
+           
 
             <Card>
               <CardHeader>
-                <CardTitle>Attendance</CardTitle>
+                <CardTitle>Dashboard</CardTitle>
                 <CardDescription>Track your presence</CardDescription>
               </CardHeader>
               <CardContent>
@@ -90,8 +77,10 @@ export default function Home() {
       </main>
 
       <footer className="border-t py-6">
-        <div className="container mx-auto px-4 text-center text-sm text-muted-foreground">
-          © {new Date().getFullYear()} Placement Cell. All rights reserved.
+        <div className="container mx-auto px-4 text-center text-sm text-muted-foreground flex flex-col items-center">
+          <span>© {new Date().getFullYear()} Placement Cell. All rights reserved.</span>
+         
+          <a className='text-sm'>Developed By Divyanshu Sharma</a>
         </div>
       </footer>
     </div>
