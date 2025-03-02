@@ -7,6 +7,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { GraduationCap, ArrowLeft, CheckCircle, XCircle } from 'lucide-react';
 import { markAttendance } from '@/app/actions/user';
 import { useToast } from '@/hooks/use-toast';
+// import { error } from 'console';
 
 export default function ScanPage({ params }: { params: { userId: string } }) {
   const router = useRouter();
@@ -26,10 +27,20 @@ export default function ScanPage({ params }: { params: { userId: string } }) {
     async function processAttendance() {
       try {
         const result = await markAttendance(params.userId);
+        if(result.error){
+          if(result.error === 'Unauthorized access'){
+            toast({
+              title: 'BKL BHAG JHA YHA SE',
+              description: 'Unauthorized access',
+            });
+            router.push('/login');
+          }
+          throw new Error(result.error);
+        }
           setResult(result);
    
-      } catch (error:any) {
-        if(error.message === 'Unauthorized access') {
+      } catch (err:any) {
+        if(err.message === 'Unauthorized access') {
           toast({
             title: 'BKL BHAG JHA YHA SE',
             description: 'Unauthorized access',
