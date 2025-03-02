@@ -146,8 +146,9 @@ export default function RegisterPage() {
       </main>
 
       <footer className="border-t py-6">
-        <div className="container mx-auto px-4 text-center text-sm text-muted-foreground">
-          © {new Date().getFullYear()} Placement Cell. All rights reserved.
+        <div className="container mx-auto px-4 text-center text-sm text-muted-foreground flex-col flex items-center">
+          <span>© {new Date().getFullYear()} Placement Cell. All rights reserved.</span>
+          <span className='text-sm'>Developed By Divyanshu Sharma</span>
         </div>
       </footer>
     </div>
