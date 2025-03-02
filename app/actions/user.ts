@@ -6,6 +6,8 @@ import { revalidatePath } from 'next/cache';
 import { cookies } from 'next/headers';
 import { generateToken } from '@/lib/auth';
 import { any } from 'zod';
+import jwt from 'jsonwebtoken';
+import { useToast } from '@/hooks/use-toast';
 
 export async function registerUser(userData: { name: string; email: string; rollNumber: string }) {
   try {
@@ -108,6 +110,19 @@ export async function getUserByRollNumber(rollNumber: string) {
 export async function markAttendance(userId: string) {
   try {
     await connectToDatabase();
+    const { toast } = useToast();
+    const token = cookies().get('auth-token')?.value;
+    if (!token) {
+      
+      return { success: false, error: 'Unauthorized access' };
+    }
+
+    const decodedToken: any = jwt.decode(token);
+    if (decodedToken?.role !== 'admin') {
+      
+      return { success: false, error: 'Unauthorized access' };
+    }
+
     
     const user = await User.findOne({qrCode: `${process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000'}/scan/${userId}`});
     if (!user) {
@@ -185,8 +200,8 @@ export async function getAllUsers() {
 export async function adminLogin(username: string, password: string) {
   try {
     // Fixed admin credentials (in a real app, these would be in env variables)
-    const ADMIN_USERNAME = process.env.ADMIN_USERNAME || 'admin';
-    const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD || 'admin123';
+    const ADMIN_USERNAME = process.env.ADMIN_USERNAME || 'admin@rtu';
+    const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD || 'rtu@superadmin@2025';
     
     if (username === ADMIN_USERNAME && password === ADMIN_PASSWORD) {
       // Generate JWT token

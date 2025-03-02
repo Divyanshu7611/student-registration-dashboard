@@ -26,11 +26,16 @@ export default function ScanPage({ params }: { params: { userId: string } }) {
     async function processAttendance() {
       try {
         const result = await markAttendance(params.userId);
-     
-
           setResult(result);
    
-      } catch (error) {
+      } catch (error:any) {
+        if(error.message === 'Unauthorized access') {
+          toast({
+            title: 'BKL BHAG JHA YHA SE',
+            description: 'Unauthorized access',
+          });
+          router.push('/login');
+        }
         setResult({
           success: false,
           message: 'Failed to process attendance. Please try again.',
