@@ -13,6 +13,7 @@ import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '
 import { GraduationCap, ArrowLeft, Lock } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import { adminLogin } from '@/app/actions/user';
+import { getTokenFromCookies } from '@/lib/auth';
 
 const formSchema = z.object({
   username: z.string().min(1, { message: 'Username is required' }),
@@ -21,6 +22,11 @@ const formSchema = z.object({
 
 export default function LoginPage() {
   const router = useRouter();
+  const token = getTokenFromCookies();
+  if(token) {
+    const router = useRouter();
+    router.push('/admin/scanner');
+  }
   const { toast } = useToast();
   const [isSubmitting, setIsSubmitting] = useState(false);
 
