@@ -37,21 +37,21 @@ export default function ScannerPage() {
   //   }
 
   //   // Fetch all users
-  //   async function fetchUsers() {
-  //     const result = await getAllUsers();
-  //     if (result.success) {
-  //       setUsers(result.users || []);
-  //     } else {
-  //       toast({
-  //         variant: "destructive",
-  //         title: "Error",
-  //         description: result.error || "Failed to fetch users",
-  //       });
-  //     }
-  //     setLoading(false);
-  //   }
+    // async function fetchUsers() {
+    //   const result = await getAllUsers();
+    //   if (result.success) {
+    //     setUsers(result.users || []);
+    //   } else {
+    //     toast({
+    //       variant: "destructive",
+    //       title: "Error",
+    //       description: result.error || "Failed to fetch users",
+    //     });
+    //   }
+    //   setLoading(false);
+    // }
 
-  //   fetchUsers();
+    // fetchUsers();
   // }, [toast]);
 
   // const handleScan = async (data: string | null) => {
@@ -76,24 +76,24 @@ export default function ScannerPage() {
   //       message: result.message || result.error || "Unknown error"
   //     });
       
-  //     if (result.success) {
-  //       toast({
-  //         title: "Success",
-  //         description: result.message,
-  //       });
+      // if (result.success) {
+      //   toast({
+      //     title: "Success",
+      //     description: result.message,
+      //   });
         
-  //       // Refresh user list
-  //       const usersResult = await getAllUsers();
-  //       if (usersResult.success) {
-  //         setUsers(usersResult.users || []);
-  //       }
-  //     } else {
-  //       toast({
-  //         variant: "destructive",
-  //         title: "Error",
-  //         description: result.error || "Failed to mark attendance",
-  //       });
-  //     }
+      //   // Refresh user list
+      //   const usersResult = await getAllUsers();
+      //   if (usersResult.success) {
+      //     setUsers(usersResult.users || []);
+      //   }
+      // } else {
+      //   toast({
+      //     variant: "destructive",
+      //     title: "Error",
+      //     description: result.error || "Failed to mark attendance",
+      //   });
+      // }
   //   }
   // };
 
@@ -132,7 +132,27 @@ export default function ScannerPage() {
       toast({ variant: "destructive", title: "Error", description: error.message });
     }
   };
-
+  useEffect(() => {
+    async function fetchUsers() {
+      try {
+        const result = await getAllUsers();
+        if (result.success) {
+          setUsers(result.users || []);
+        } else {
+          throw new Error(result.error || "Failed to fetch users");
+        }
+      } catch (error: any) {
+        toast({
+          variant: "destructive",
+          title: "Error",
+          description: error.message,
+        });
+      } finally {
+        setLoading(false);
+      }
+    }
+    fetchUsers();
+  }, [toast]);
   useEffect(() => {
     if (scanning) {
       const scanner = new Html5QrcodeScanner(
