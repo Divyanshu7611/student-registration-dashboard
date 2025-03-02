@@ -109,7 +109,7 @@ export async function markAttendance(userId: string) {
   try {
     await connectToDatabase();
     
-    const user = await User.findById(userId);
+    const user = await User.findOne({qrCode: `${process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000'}/scan/${userId}`});
     if (!user) {
       return { success: false, error: 'User not found' };
     }
