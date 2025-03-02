@@ -7,6 +7,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { GraduationCap, ArrowLeft, CheckCircle, XCircle } from 'lucide-react';
 import { markAttendance } from '@/app/actions/user';
 import { useToast } from '@/hooks/use-toast';
+import { error } from 'console';
 // import { error } from 'console';
 
 export default function ScanPage({ params }: { params: { userId: string } }) {
@@ -118,7 +119,11 @@ export default function ScanPage({ params }: { params: { userId: string } }) {
               </div>
             ) : (
               <div className="text-center py-8 text-muted-foreground">
-                Something went wrong. Please try again.
+                {result== 'Unauthorized access' ? (
+                  <p>BKL NIKAL JA YHA SE</p>
+                ) : (
+                  <p>Something Went Wrong</p>
+                )}  
               </div>
             )}
           </CardContent>
