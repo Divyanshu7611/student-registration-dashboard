@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { z } from "zod";
@@ -8,6 +8,7 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { getEvents } from "../actions/events";
 import {
   Card,
   CardContent,
@@ -53,6 +54,17 @@ export default function RegisterPage() {
   const router = useRouter();
   const { toast } = useToast();
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [events, setEvents] = useState<any>([]);
+
+  useEffect(() => {
+    const getEventData = async () => {
+      const res = await getEvents();
+      if (res) {
+        setEvents(res);
+      }
+    };
+    getEventData();
+  }, []);
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -71,7 +83,7 @@ export default function RegisterPage() {
   async function onSubmit(values: z.infer<typeof formSchema>) {
     setIsSubmitting(true);
     try {
-      console.log("Form values:", values); // Debugging line  
+      console.log("Form values:", values); // Debugging line
       const result = await registerStudents(values);
 
       if (result.success) {
@@ -224,7 +236,7 @@ export default function RegisterPage() {
                   )}
                 />
 
-                <FormField
+                {/* <FormField
                   control={form.control}
                   name="eventName"
                   render={({ field }) => (
@@ -232,6 +244,36 @@ export default function RegisterPage() {
                       <FormLabel>Event Name</FormLabel>
                       <FormControl>
                         <Input placeholder="Aptitude Test" {...field} />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                /> */}
+
+                <FormField
+                  control={form.control}
+                  name="eventName"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Event Name</FormLabel>
+                      <FormControl>
+                        {events.length > 0 ? (
+                          <select
+                            {...field}
+                            className="w-full border border-input rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-ring"
+                          >
+                            <option value="">Select an event</option>
+                            {events.map((event:any) => (
+                              <option key={event._id} value={event.eventName}>
+                                {event.eventName}
+                              </option>
+                            ))}
+                          </select>
+                        ) : (
+                          <div className="text-muted-foreground text-sm">
+                            No events available
+                          </div>
+                        )}
                       </FormControl>
                       <FormMessage />
                     </FormItem>
