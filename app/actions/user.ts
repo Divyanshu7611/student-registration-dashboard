@@ -2,6 +2,7 @@
 
 import { connectToDatabase } from '@/lib/db';
 import User from '@/models/User';
+import Students from '@/models/Students';
 import { revalidatePath } from 'next/cache';
 import { cookies } from 'next/headers';
 import { generateToken } from '@/lib/auth';
@@ -57,7 +58,8 @@ export async function registerUser(userData: { name: string; email: string; roll
 export async function getUserById(userId: string) {
   try {
     await connectToDatabase();
-    const user = await User.findById(userId);
+    // const user = await User.findById(userId);
+    const user = await User.findById(userId) || await Students.findById(userId);
     
     if (!user) {
       return { success: false, error: 'User not found' };
@@ -308,4 +310,53 @@ export async function adminLogin(username: string, password: string) {
 export async function logout() {
   cookies().delete('auth-token');
   return { success: true };
+}
+
+
+
+export async function registerStudents(studentData:{name:string,email:string,rollNumber:string, universityRollNo:string, eventName:string,branch:string, phoneNumber:string}) {
+  try {
+    await connectToDatabase();
+    
+    // Check if user already exists
+    const existingUser = await Students.findOne({
+      $or: [
+        { email: studentData.email },
+        { rollNumber: studentData.rollNumber },
+        { universityRollNo: studentData.universityRollNo}
+      ]
+    });
+    
+    if (existingUser) {
+      return {
+        success: false,
+        error: 'A user with this email or roll number already exists'
+      };
+    }
+    
+    // Generate QR code URL (this will be the URL to verify attendance)
+    const userId = Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
+    const qrCodeUrl = `${process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000'}/scan/${userId}`;
+    
+    // Create new user
+    const newUser = new Students({
+      ...studentData,
+      qrCode: qrCodeUrl // Assuming qrCode is a field in the User model 
+    });
+    
+    await newUser.save();
+    
+    revalidatePath('/dashboard');
+    
+    return {
+      success: true,
+      userId: newUser._id.toString()
+    };
+  } catch (error) {
+    console.error('Error registering user:', error);
+    return {
+      success: false,
+      error: 'Failed to register user'
+    };
+  }
 }

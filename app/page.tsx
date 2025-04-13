@@ -26,14 +26,14 @@ export default function Home() {
       <main className="flex-1 container mx-auto px-4 py-8">
         <div className="max-w-4xl mx-auto">
           <section className="mb-12 text-center">
-            <h2 className="text-3xl md:text-4xl font-bold mb-4">QR-Based Attendance System</h2>
+            <h2 className="text-3xl md:text-4xl font-bold mb-4">PLACEMENT CELL || RTU-KOTA</h2>
             <p className="text-muted-foreground text-lg mb-6">
               Streamline attendance tracking for placement activities with our QR code system
             </p>
             <div className="flex flex-col sm:flex-row justify-center gap-4">
-              {/* <Link href="/register">
-                <Button size="lg" className="w-full sm:w-auto">Register Now</Button>
-              </Link> */}
+              <Link href="/student-register">
+                <Button size="lg" className="w-full sm:w-auto">Student Registration</Button>
+              </Link>
               <Link href="/login">
                 <Button size="lg" className="w-full sm:w-auto">Admin Access</Button>
               </Link>
