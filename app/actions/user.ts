@@ -8,6 +8,8 @@ import { cookies } from 'next/headers';
 import { generateToken } from '@/lib/auth';
 import { any } from 'zod';
 import jwt from 'jsonwebtoken';
+import { sendMail } from '@/lib/email';
+import { registrationTemplate } from '@/mail/studentRegistration';
 
 export async function registerUser(userData: { name: string; email: string; rollNumber: string }) {
   try {
@@ -178,6 +180,7 @@ export async function getUserByRollNumber(rollNumber: string) {
 
 
 import { toZonedTime, format } from "date-fns-tz";
+import { QrCode } from 'lucide-react';
 
 const indiaTimeZone = "Asia/Kolkata"; // IST
 
@@ -345,6 +348,13 @@ export async function registerStudents(studentData:{name:string,email:string,rol
     });
     
     await newUser.save();
+
+    const html = registrationTemplate(newUser.name, studentData.eventName, qrCodeUrl, studentData.rollNumber);
+    const mailResponse = await sendMail({
+      to: studentData.email,
+      subject: 'Registration Confirmation',
+      html
+    });
     
     revalidatePath('/dashboard');
     
