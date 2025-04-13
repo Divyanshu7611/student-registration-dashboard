@@ -110,20 +110,6 @@ export default function DashboardPage() {
     setSearchLoading(false);
   };
 
-  // const downloadQR = () => {
-  //   if (!user) return;
-
-  //   const canvas = document.getElementById('qr-code-canvas') as HTMLCanvasElement;
-  //   if (!canvas) return;
-
-  //   const url = canvas.toDataURL('image/png');
-  //   const link = document.createElement('a');
-  //   link.href = url;
-  //   link.download = `qr-code-${user.rollNumber}.png`;
-  //   document.body.appendChild(link);
-  //   link.click();
-  //   document.body.removeChild(link);
-  // };
   const downloadQR = () => {
     if (!user) return;
 

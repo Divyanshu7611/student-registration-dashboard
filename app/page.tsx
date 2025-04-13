@@ -26,7 +26,7 @@ export default function Home() {
       <main className="flex-1 container mx-auto px-4 py-8">
         <div className="max-w-4xl mx-auto">
           <section className="mb-12 text-center">
-            <h2 className="text-3xl md:text-4xl font-bold mb-4">PTP || RTU-KOTA</h2>
+            <h2 className="text-2xl md:text-4xl text-center font-bold mb-4">PTP || RTU-KOTA</h2>
             <p className="text-muted-foreground text-lg mb-6">
               Streamline attendance tracking for placement activities with our QR code system
             </p>
