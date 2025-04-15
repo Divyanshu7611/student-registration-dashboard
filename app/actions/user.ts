@@ -198,14 +198,20 @@ export async function markAttendance(userId: string) {
       return { success: false, error: 'Unauthorized access' };
     }
 
-    const user = await User.findOne({
-      qrCode: `${process.env.NEXT_PUBLIC_APP_URL || 'https://student-dashboard-sable.vercel.app'}/scan/${userId}`
-    }) || Students.findOne({
+    let user = await User.findOne({
       qrCode: `${process.env.NEXT_PUBLIC_APP_URL || 'https://student-dashboard-sable.vercel.app'}/scan/${userId}`
     });
 
     if (!user) {
+      user = Students.findOne({
+        qrCode: `${process.env.NEXT_PUBLIC_APP_URL || 'https://student-dashboard-sable.vercel.app'}/scan/${userId}`
+      });
+      
+    }
+
+    if(!user){
       return { success: false, error: 'User not found' };
+
     }
 
     // ✅ Convert today's date to IST (without time)
