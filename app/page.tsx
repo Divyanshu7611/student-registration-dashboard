@@ -107,7 +107,8 @@ export default function Home() {
       <header className="border-b">
         <div className="container mx-auto px-4 py-4 flex justify-between items-center">
           <div className="flex items-center space-x-2">
-            <GraduationCap className="h-6 w-6 text-primary" />
+            {/* <GraduationCap className="h-6 w-6 text-primary" /> */}
+            <img src="/RTU logo.png" alt="Logo" className="h-8 w-8" />
             <h1 className="text-xl font-bold">Placement Cell</h1>
           </div>
         </div>
