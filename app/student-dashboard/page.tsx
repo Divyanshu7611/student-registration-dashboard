@@ -25,7 +25,7 @@ import {
 } from "@/components/ui/table";
 import { GraduationCap, ArrowLeft, Calendar, Download } from "lucide-react";
 import { format } from "date-fns";
-import { getUserById, getUserByRollNumber } from "@/app/actions/user";
+import { getUserById, getStudentByEmail } from "@/app/actions/user";
 import { useToast } from "@/hooks/use-toast";
 
 interface User {
@@ -33,6 +33,11 @@ interface User {
   name: string;
   email: string;
   rollNumber: string;
+  branch: string;
+  year: string;
+  eventName: string;
+  phoneNumber: string;
+  univesityRollNo: string;
   qrCode: string;
   attendance: {
     date: string;
@@ -47,7 +52,7 @@ export default function DashboardPage() {
 
   const [user, setUser] = useState<User | null | undefined>(null);
   const [loading, setLoading] = useState(true);
-  const [rollNumber, setRollNumber] = useState("");
+  const [email, setEmail] = useState("");
   const [searchLoading, setSearchLoading] = useState(false);
 
   useEffect(() => {
@@ -82,7 +87,7 @@ export default function DashboardPage() {
   }, [userId, toast]);
 
   const handleSearch = async () => {
-    if (!rollNumber.trim()) {
+    if (!email.trim()) {
       toast({
         variant: "destructive",
         title: "Error",
@@ -92,7 +97,7 @@ export default function DashboardPage() {
     }
 
     setSearchLoading(true);
-    const result = await getUserByRollNumber(rollNumber);
+    const result = await getStudentByEmail(email);
 
     if (result.success && result.user) {
       setUser(result.user);
@@ -139,8 +144,6 @@ export default function DashboardPage() {
     img.src = "data:image/svg+xml;base64," + btoa(svgData);
   };
 
-
-
   return (
     <div className="min-h-screen bg-background flex flex-col">
       <header className="border-b">
@@ -164,15 +167,15 @@ export default function DashboardPage() {
             <CardHeader>
               <CardTitle>Find Your Dashboard</CardTitle>
               <CardDescription>
-                Enter your roll number to access your dashboard
+                Enter your email to access your dashboard
               </CardDescription>
             </CardHeader>
             <CardContent>
               <div className="flex space-x-2">
                 <Input
-                  placeholder="Enter your roll number"
-                  value={rollNumber}
-                  onChange={(e) => setRollNumber(e.target.value)}
+                  placeholder="Enter your email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
                 />
                 <Button onClick={handleSearch} disabled={searchLoading}>
                   {searchLoading ? "Searching..." : "Search"}
@@ -189,7 +192,7 @@ export default function DashboardPage() {
             <h2 className="text-2xl font-bold mb-6">Student Dashboard</h2>
 
             <div className="grid md:grid-cols-3 gap-6 mb-8">
-              <Card>
+              {/* <Card>
                 <CardHeader>
                   <CardTitle>Student Info</CardTitle>
                 </CardHeader>
@@ -212,6 +215,73 @@ export default function DashboardPage() {
                         Email
                       </dt>
                       <dd className="truncate">{user.email}</dd>
+                    </div>
+                  </dl>
+                </CardContent>
+              </Card> */}
+
+              <Card className="md:col-span-1">
+                <CardHeader>
+                  <CardTitle>Student Info</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <dl className="space-y-3 text-sm">
+                    <div>
+                      <dt className="font-medium text-muted-foreground">
+                        Name
+                      </dt>
+                      <dd className="text-lg font-semibold">{user.name}</dd>
+                    </div>
+
+                    <div>
+                      <dt className="font-medium text-muted-foreground">
+                        Roll Number
+                      </dt>
+                      <dd>{user.rollNumber}</dd>
+                    </div>
+
+                    <div>
+                      <dt className="font-medium text-muted-foreground">
+                        University Roll No.
+                      </dt>
+                      <dd>{user.univesityRollNo}</dd>
+                    </div>
+
+                    <div>
+                      <dt className="font-medium text-muted-foreground">
+                        Branch
+                      </dt>
+                      <dd>{user.branch}</dd>
+                    </div>
+
+                    <div>
+                      <dt className="font-medium text-muted-foreground">
+                        Year
+                      </dt>
+                      <dd>{user.year}</dd>
+                    </div>
+
+                    <div>
+                      <dt className="font-medium text-muted-foreground">
+                        Phone Number
+                      </dt>
+                      <dd>{user.phoneNumber}</dd>
+                    </div>
+
+                    <div>
+                      <dt className="font-medium text-muted-foreground">
+                        Email
+                      </dt>
+                      <dd className="truncate">{user.email}</dd>
+                    </div>
+
+                    <div className="pt-2">
+                      <dt className="font-medium text-muted-foreground">
+                        Event Name
+                      </dt>
+                      <dd className="bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-100 rounded px-2 py-1 inline-block font-semibold">
+                        {user.eventName}
+                      </dd>
                     </div>
                   </dl>
                 </CardContent>
@@ -271,7 +341,13 @@ export default function DashboardPage() {
                           {user.attendance.map((record, index) => (
                             <TableRow key={index}>
                               <TableCell>
-                              {format(toZonedTime(new Date(record.date), "Asia/Kolkata"), "PPP")}
+                                {format(
+                                  toZonedTime(
+                                    new Date(record.date),
+                                    "Asia/Kolkata"
+                                  ),
+                                  "PPP"
+                                )}
                               </TableCell>
                               <TableCell>
                                 <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800 dark:bg-green-800 dark:text-green-100">

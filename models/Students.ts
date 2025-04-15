@@ -13,7 +13,7 @@ export interface IStudent extends Document {
   attendance: { 
     date: Date;
     present: boolean;
-  };
+  }[];
   createdAt: Date;
   updatedAt: Date;
 }
@@ -68,7 +68,7 @@ const StudentSchema = new Schema<IStudent>(
       unique: true,
       required: [true, 'QR Code is required'],  // Made required
     },
-    attendance: [
+    attendance:[
       {
         date: {
           type: Date,

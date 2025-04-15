@@ -322,7 +322,7 @@ export default function RegisterPage() {
             <p className="text-sm text-muted-foreground">
               Already registered?{" "}
               <Link
-                href="/dashboard"
+                href="/student-dashboard"
                 className="text-primary underline underline-offset-4"
               >
                 Go to Dashboard

@@ -32,7 +32,7 @@ export async function registerUser(userData: { name: string; email: string; roll
     
     // Generate QR code URL (this will be the URL to verify attendance)
     const userId = Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
-    const qrCodeUrl = `${process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000'}/scan/${userId}`;
+    const qrCodeUrl = `${process.env.NEXT_PUBLIC_APP_URL || 'https://student-dashboard-sable.vercel.app'}/scan/${userId}`;
     
     // Create new user
     const newUser = new User({
@@ -198,7 +198,9 @@ export async function markAttendance(userId: string) {
     }
 
     const user = await User.findOne({
-      qrCode: `${process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000'}/scan/${userId}`
+      qrCode: `${process.env.NEXT_PUBLIC_APP_URL || 'https://student-dashboard-sable.vercel.app'}/scan/${userId}`
+    }) || Students.findOne({
+      qrCode: `${process.env.NEXT_PUBLIC_APP_URL || 'https://student-dashboard-sable.vercel.app'}/scan/${userId}`
     });
 
     if (!user) {
@@ -339,7 +341,7 @@ export async function registerStudents(studentData:{name:string,email:string,rol
     
     // Generate QR code URL (this will be the URL to verify attendance)
     const userId = Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
-    const qrCodeUrl = `${process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000'}/scan/${userId}`;
+    const qrCodeUrl = `${process.env.NEXT_PUBLIC_APP_URL || 'https://student-dashboard-sable.vercel.app'}/scan/${userId}`;
     
     // Create new user
     const newUser = new Students({
@@ -368,5 +370,39 @@ export async function registerStudents(studentData:{name:string,email:string,rol
       success: false,
       error: 'Failed to register user'
     };
+  }
+}
+
+
+
+
+
+export async function getStudentByEmail(email: string) {
+  try {
+    await connectToDatabase();
+    const user = await Students.findOne({ email });
+    
+    if (!user) {
+      return { success: false, error: 'User not found' };
+    }
+    
+    return {
+      success: true,
+      user: {
+        id: user._id.toString(),
+        name: user.name,
+        email: user.email,
+        branch: user.branch,
+        universityRollNo: user.universityRollNo,
+        eventName: user.eventName,
+        phoneNumber: user.phoneNumber,
+        rollNumber: user.rollNumber,
+        qrCode: user.qrCode,
+        attendance: user.attendance,
+      }
+    };
+  } catch (error) {
+    console.error('Error fetching user:', error);
+    return { success: false, error: 'Failed to fetch user' };
   }
 }
