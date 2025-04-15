@@ -25,7 +25,7 @@ import {
 } from "@/components/ui/table";
 import { GraduationCap, ArrowLeft, Calendar, Download } from "lucide-react";
 import { format } from "date-fns";
-import { getUserById, getStudentByEmail } from "@/app/actions/user";
+import { getStudentById, getStudentByEmail } from "@/app/actions/user";
 import { useToast } from "@/hooks/use-toast";
 
 interface User {
@@ -37,7 +37,7 @@ interface User {
   year: string;
   eventName: string;
   phoneNumber: string;
-  univesityRollNo: string;
+  universityRollNo: string;
   qrCode: string;
   attendance: {
     date: string;
@@ -59,7 +59,7 @@ export default function DashboardPage() {
     async function fetchUser() {
       if (userId) {
         setLoading(true);
-        const result = await getUserById(userId);
+        const result = await getStudentById(userId);
         if (result.success) {
           if (result.user) {
             if (result.user) {
@@ -244,7 +244,7 @@ export default function DashboardPage() {
                       <dt className="font-medium text-muted-foreground">
                         University Roll No.
                       </dt>
-                      <dd>{user.univesityRollNo}</dd>
+                      <dd>{user.universityRollNo}</dd>
                     </div>
 
                     <div>

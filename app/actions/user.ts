@@ -181,6 +181,7 @@ export async function getUserByRollNumber(rollNumber: string) {
 
 import { toZonedTime, format } from "date-fns-tz";
 import { QrCode } from 'lucide-react';
+import { yearsToDays } from 'date-fns';
 
 const indiaTimeZone = "Asia/Kolkata"; // IST
 
@@ -396,7 +397,43 @@ export async function getStudentByEmail(email: string) {
         universityRollNo: user.universityRollNo,
         eventName: user.eventName,
         phoneNumber: user.phoneNumber,
+        year: user.year,
         rollNumber: user.rollNumber,
+        qrCode: user.qrCode,
+        attendance: user.attendance,
+      }
+    };
+  } catch (error) {
+    console.error('Error fetching user:', error);
+    return { success: false, error: 'Failed to fetch user' };
+  }
+}
+
+
+
+
+export async function getStudentById(userId: string) {
+  try {
+    await connectToDatabase();
+    // const user = await User.findById(userId);
+    const user = await Students.findById(userId);
+    
+    if (!user) {
+      return { success: false, error: 'User not found' };
+    }
+    
+    return {
+      success: true,
+      user: {
+        id: user._id.toString(),
+        name: user.name,
+        email: user.email,
+        rollNumber: user.rollNumber,
+        branch: user.branch,
+        universityRollNo: user.universityRollNo,
+        year: user.year,
+        eventName: user.eventName,
+        phoneNumber: user.phoneNumber,
         qrCode: user.qrCode,
         attendance: user.attendance,
       }
