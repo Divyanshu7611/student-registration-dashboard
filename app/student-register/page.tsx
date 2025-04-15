@@ -192,6 +192,11 @@ export default function RegisterPage() {
                           <option value="CE">CE</option>
                           <option value="EE">EE</option>
                           <option value="IT">IT</option>
+                          <option value="PCE">PCE</option>
+                          <option value="PE">IT</option>
+                          <option value="AE">AE</option>
+                          <option value="EIC">EIC</option>
+                          <option value="Other">Other</option>
                         </select>
                       </FormControl>
                       <FormMessage />
