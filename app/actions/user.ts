@@ -321,6 +321,7 @@ export async function adminLogin(username: string, password: string) {
 
 export async function logout() {
   cookies().delete('auth-token');
+  localStorage.removeItem('auth-token')
   return { success: true };
 }
 
