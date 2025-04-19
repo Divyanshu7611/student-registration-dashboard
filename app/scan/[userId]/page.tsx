@@ -35,7 +35,7 @@ export default function ScanPage({ params }: { params: { userId: string } }) {
         if (result.error) {
           if (result.error === "Unauthorized access") {
             toast({
-              title: "BKL YHA BHI GALI SUNE GA",
+              title: "Unauthorized Access",
               description: "Unauthorized access",
             });
             router.push("/login");
@@ -47,7 +47,7 @@ export default function ScanPage({ params }: { params: { userId: string } }) {
       } catch (err: any) {
         if (err.message === "Unauthorized access") {
           toast({
-            title: "BKL BHAG JHA YHA SE",
+            title: "Unauthorized Access",
             description: "Unauthorized access",
           });
           router.push("/login");
