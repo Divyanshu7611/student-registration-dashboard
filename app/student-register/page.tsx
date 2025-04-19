@@ -91,7 +91,7 @@ export default function RegisterPage() {
           title: "Registration successful",
           description: "Your have Successfully Registered.",
         });
-        router.push(`/dashboard?userId=${result.userId}`);
+        router.push(`/student-dashboard?userId=${result.userId}`);
       } else {
         toast({
           variant: "destructive",
@@ -292,7 +292,7 @@ export default function RegisterPage() {
                     <FormItem>
                       <FormLabel>University Roll Number</FormLabel>
                       <FormControl>
-                        <Input placeholder="21056789" {...field} />
+                        <Input placeholder="22EUCCS033" {...field} />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
