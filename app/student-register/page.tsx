@@ -275,9 +275,17 @@ export default function RegisterPage() {
                             ))}
                           </select>
                         ) : (
-                          <div className="text-muted-foreground text-sm">
-                            No events available
-                          </div>
+                          <select
+                            {...field}
+                            className="w-full border border-input rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-ring"
+                          >
+                            <option value="">Select an event</option>
+
+                              <option value="CTRL + ALT + DECIDE">
+                                CTRL + ALT + DECIDE
+                              </option>
+
+                          </select>
                         )}
                       </FormControl>
                       <FormMessage />
