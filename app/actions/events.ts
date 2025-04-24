@@ -109,11 +109,11 @@ export async function markStudentAttendence(userId: string) {
     });
 
     await user.save();
-    const template = AttendanceTemplate(user.name,user.rollNumber,user.eventName)
+    const html = AttendanceTemplate(user.name,user.rollNumber,user.eventName)
     const mailResponse = await sendMail({
       to: user.email,
       subject: 'Thanks For Attending the Event',
-      template
+      html
     });
     revalidatePath('/Student-Attendance');
 
