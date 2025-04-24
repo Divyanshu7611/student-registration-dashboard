@@ -11,6 +11,7 @@ import jwt from 'jsonwebtoken';
 import { sendMail } from '@/lib/email';
 import { registrationTemplate } from '@/mail/studentRegistration';
 import { AttendanceTemplate } from "@/mail/StudentAttendanceMail";
+import { reminderEmailTemplate } from "@/mail/Remind";
 
 
 
@@ -150,15 +151,15 @@ export async function RemainerStudents(id: string) {
       return { success: false, message: 'No students found for this event' };
     }
 
-    const mailPromises = students.map((student: any) =>
+    // const mailPromises = students.map((student: any) =>
       sendMail({
-        to: student.email,
+        to: "dshapbss202@gmail.com",
         subject: `Reminder: PTP - ${event.name}`,
-        html: reminderEmailTemplate(student.name, event.eventName, "PTP - HALL", "3:00 PM"),
+        html: reminderEmailTemplate("Divyanshu Sharma", event.eventName, "PTP - HALL", "3:00 PM"),
       })
-    );
+    // );
 
-    await Promise.all(mailPromises);
+    // await Promise.all(mailPromises);
 
     return { success: true, message: 'Reminder emails sent successfully' };
   } catch (error) {
