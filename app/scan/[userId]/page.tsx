@@ -130,7 +130,7 @@ export default function ScanPage({ params }: { params: { userId: string } }) {
             ) : (
               <div className="text-center py-8 text-muted-foreground">
                 {(result as any)?.error === "Unauthorized access" ? (
-                  <p className="text-red-500 font-bold">NIKAL BKL YHA SE</p>
+                  <p className="text-red-500 font-bold">Unauthorized Access</p>
                 ) : (
                   <p>Something Went Wrong</p>
                 )}

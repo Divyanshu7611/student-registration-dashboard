@@ -1,5 +1,15 @@
 'use server'
 import Event from "@/models/Event";
+import { connectToDatabase } from '@/lib/db';
+import User from '@/models/User';
+import Students from '@/models/Students';
+import { revalidatePath } from 'next/cache';
+import { cookies } from 'next/headers';
+import { generateToken } from '@/lib/auth';
+import { any } from 'zod';
+import jwt from 'jsonwebtoken';
+import { sendMail } from '@/lib/email';
+import { registrationTemplate } from '@/mail/studentRegistration';
 
 
 
@@ -40,5 +50,77 @@ export async function deleteEvent(id: string) {
     return deletedEvent;
   } catch (error) {
     console.error("Error deleting event:", error);
+  }
+}
+
+
+
+import { toZonedTime, format } from "date-fns-tz";
+import { QrCode } from 'lucide-react';
+import { yearsToDays } from 'date-fns';
+
+const indiaTimeZone = "Asia/Kolkata"; // IST
+
+export async function markStudentAttendence(userId: string) {
+  try {
+    await connectToDatabase();
+ 
+
+    let user = await Students.findOne({
+      qrCode: `${process.env.NEXT_PUBLIC_APP_URL || 'https://student-dashboard-sable.vercel.app'}/scan/${userId}`
+    });
+
+
+    if(!user){
+      return { success: false, error: 'User not found' };
+
+    }
+
+    // ✅ Convert today's date to IST (without time)
+    const todayIST = format(toZonedTime(new Date(), indiaTimeZone), 'yyyy-MM-dd');
+
+    // ✅ Check if attendance is already marked for today
+    const attendanceToday = user.attendance.find((a: any) => {
+      const attendanceDateIST = format(
+        toZonedTime(new Date(a.date), indiaTimeZone),
+        'yyyy-MM-dd'
+      );
+
+      return attendanceDateIST === todayIST; // Compare only the date part
+    });
+
+    if (attendanceToday) {
+      return {
+        success: true,
+        message: 'Attendance already marked for today',
+        user: {
+          id: user._id.toString(),
+          name: user.name,
+          rollNumber: user.rollNumber
+        }
+      };
+    }
+
+    // ✅ Store attendance date in UTC (safe for database)
+    user.attendance.push({
+      date: new Date().toISOString(),
+      present: true
+    });
+
+    await user.save();
+    revalidatePath('/Student-Attendance');
+
+    return {
+      success: true,
+      message: 'Attendance marked successfully',
+      user: {
+        id: user._id.toString(),
+        name: user.name,
+        rollNumber: user.rollNumber
+      }
+    };
+  } catch (error) {
+    console.error('Error marking attendance:', error);
+    return { success: false, error: 'Failed to mark attendance' };
   }
 }
