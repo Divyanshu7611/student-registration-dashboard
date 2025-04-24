@@ -4,8 +4,8 @@ export const AttendanceTemplate = (
     eventName: string,
   ) => {
     return `
-      <div style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; padding: 30px; background-color: #f9f9f9; text-align: center;">
-        <div style="max-width: 1200px; margin: 0 auto; background: #ffffff; padding: 30px; border-radius: 10px; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);">
+      <div style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; padding: 12px; background-color: #f9f9f9; text-align: center;">
+        <div style="max-width: 1200px; margin: 0 auto; background: #ffffff; padding: 24px; border-radius: 10px; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);">
           <img 
             src="https://res.cloudinary.com/dzk5x7rjz/image/upload/v1744756604/RTU_logo_me4bn1.png" 
             alt="RTU Logo" 
