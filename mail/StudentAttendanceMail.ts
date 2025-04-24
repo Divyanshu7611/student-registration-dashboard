@@ -5,7 +5,7 @@ export const AttendanceTemplate = (
   ) => {
     return `
       <div style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; padding: 30px; background-color: #f9f9f9; text-align: center;">
-        <div style="max-width: 600px; margin: 0 auto; background: #ffffff; padding: 30px; border-radius: 10px; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);">
+        <div style="max-width: 1200px; margin: 0 auto; background: #ffffff; padding: 30px; border-radius: 10px; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);">
           <img 
             src="https://res.cloudinary.com/dzk5x7rjz/image/upload/v1744756604/RTU_logo_me4bn1.png" 
             alt="RTU Logo" 
@@ -33,7 +33,7 @@ export const AttendanceTemplate = (
   
           <p style="font-size: 15px; color: #333;">Thank you for your participation!</p>
           <p style="margin-top: 8px; font-weight: bold; color: #2c3e50;">— Team Placement Cell, RTU Kota</p>
-          <p style="margin-top: 4px; font-size: 14px; color: #888;">For any queries, contact: <strong>9950156755</strong></p>
+          <p style="margin-top: 4px; font-size: 12px; color: #888;"For any queries, Email: <strong>Placementsecy@rtu.ac.in</strong></p>
         </div>
       </div>
     `;
