@@ -2,7 +2,7 @@
 import Event from "@/models/Event";
 import { connectToDatabase } from '@/lib/db';
 import User from '@/models/User';
-import Students from '@/models/Students';
+import Students from '@/models/Students'
 import { revalidatePath } from 'next/cache';
 import { cookies } from 'next/headers';
 import { generateToken } from '@/lib/auth';
@@ -10,6 +10,7 @@ import { any } from 'zod';
 import jwt from 'jsonwebtoken';
 import { sendMail } from '@/lib/email';
 import { registrationTemplate } from '@/mail/studentRegistration';
+import { AttendanceTemplate } from "@/mail/StudentAttendanceMail";
 
 
 
@@ -108,6 +109,12 @@ export async function markStudentAttendence(userId: string) {
     });
 
     await user.save();
+    const template = AttendanceTemplate(user.name,user.rollNumber,user.eventName)
+    const mailResponse = await sendMail({
+      to: user.email,
+      subject: 'Thanks For Attending the Event',
+      template
+    });
     revalidatePath('/Student-Attendance');
 
     return {
