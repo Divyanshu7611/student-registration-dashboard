@@ -1,9 +1,9 @@
-function reminderEmailTemplate(
+export const reminderEmailTemplate = (
     userName: string,
     eventName: string,
     venue: string,
     time: string
-  ) {
+  ) => {
     return `
       <div style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; padding: 12px; background-color: #f9f9f9; text-align: center;">
         <div style="max-width: 1200px; margin: 0 auto; background: #ffffff; padding: 12px; border-radius: 10px; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);">
@@ -33,7 +33,6 @@ function reminderEmailTemplate(
   
           <hr style="margin: 30px 0; border: none; border-top: 1px solid #eee;" />
   
-          <p style="font-size: 15px; color: #333;">Please be on time and bring your college ID card.</p>
           <p style="margin-top: 8px; font-weight: bold; color: #2c3e50;">— Team Placement Cell, RTU Kota</p>
           <p style="margin-top: 4px; font-size: 14px; color: #888;">For any queries, contact: <strong>9950156755</strong></p>
         </div>
