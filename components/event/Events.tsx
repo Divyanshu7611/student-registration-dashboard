@@ -128,7 +128,7 @@ export default function EventManager() {
                       <Button variant="outline" disabled>
                         Download Attendance
                       </Button>
-                      <Button variant="destructive" onClick={()=>handleReminderEvent(event._id)}>
+                      <Button variant="destructive" className="hover hover:bg-red-700 hover:text-white" onClick={()=>handleReminderEvent(event._id)}>
                         Reminder
                       </Button>
                       <Button
