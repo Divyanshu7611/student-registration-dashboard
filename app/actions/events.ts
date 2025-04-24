@@ -59,6 +59,7 @@ export async function deleteEvent(id: string) {
 import { toZonedTime, format } from "date-fns-tz";
 import { QrCode } from 'lucide-react';
 import { yearsToDays } from 'date-fns';
+import { eventNames } from "process";
 
 const indiaTimeZone = "Asia/Kolkata"; // IST
 
@@ -129,5 +130,39 @@ export async function markStudentAttendence(userId: string) {
   } catch (error) {
     console.error('Error marking attendance:', error);
     return { success: false, error: 'Failed to mark attendance' };
+  }
+}
+
+
+
+
+export async function RemainerStudents(id: string) {
+  try {
+    await connectToDatabase();
+
+    const event = await Event.findById(id);
+    if (!event) {
+      return { success: false, message: 'Event not found' };
+    }
+
+    const students = await Students.find({ eventName: event.eventName });
+    if (!students || students.length === 0) {
+      return { success: false, message: 'No students found for this event' };
+    }
+
+    const mailPromises = students.map((student: any) =>
+      sendMail({
+        to: student.email,
+        subject: `Reminder: PTP - ${event.name}`,
+        html: reminderEmailTemplate(student.name, event.eventName, "PTP - HALL", "3:00 PM"),
+      })
+    );
+
+    await Promise.all(mailPromises);
+
+    return { success: true, message: 'Reminder emails sent successfully' };
+  } catch (error) {
+    console.error('Error in RemainerStudents:', error);
+    return { success: false, message: 'Something went wrong' };
   }
 }

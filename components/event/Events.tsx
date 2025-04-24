@@ -263,6 +263,9 @@ export default function EventManager() {
                       <Button variant="outline" disabled>
                         Download Attendance
                       </Button>
+                      <Button variant="outline" disabled>
+                        Reminder
+                      </Button>
                       <Button
                         variant="destructive"
                         onClick={() => handleDeleteEvent(event._id)}
