@@ -48,6 +48,12 @@ const formSchema = z.object({
   rollNumber: z
     .string()
     .min(3, { message: "Roll number must be at least 3 characters" }),
+
+    // new gagan
+      cgpa: z.string().min(1, { message: "CGPA is required" }),
+      back: z.string().min(1, { message: "Back count is required" }),
+      summary: z.string().min(10, { message: "Summary must be at least 10 characters" }),
+     // new end 
 });
 
 export default function RegisterPage() {
@@ -77,6 +83,12 @@ export default function RegisterPage() {
       branch: "",
       year: "",
       phoneNumber: "",
+      
+      //new gagan
+       cgpa: "",           
+    back: "",           
+    summary: "", 
+    //new  end
     },
   });
 
@@ -321,6 +333,49 @@ export default function RegisterPage() {
                   )}
                 />
 
+{/* new gagan */}
+  <FormField
+                  control={form.control}
+                  name="cgpa"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Cgpa </FormLabel>
+                      <FormControl>
+                        <Input placeholder="9.4" {...field} />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+
+                       <FormField
+                  control={form.control}
+                  name="back"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>No. of Active Backs </FormLabel>
+                      <FormControl>
+                        <Input placeholder="" {...field} />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+
+               <FormField
+                  control={form.control}
+                  name="summary"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Summary</FormLabel>
+                      <FormControl>
+                        <Input placeholder="Why should we have you in PTP ?" {...field} />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+{/* new  end  */}
                 <Button
                   type="submit"
                   className="w-full"
@@ -350,7 +405,7 @@ export default function RegisterPage() {
           <span>
             © {new Date().getFullYear()} Placement Cell. All rights reserved.
           </span>
-          <span className="text-sm">Developed By Divyanshu Sharma</span>
+          <span className="text-sm">Developed By Placement Team</span>
         </div>
       </footer>
     </div>

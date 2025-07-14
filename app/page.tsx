@@ -176,7 +176,7 @@ export default function Home() {
       <footer className="border-t py-6">
         <div className="container mx-auto px-4 text-center text-sm text-muted-foreground flex flex-col items-center">
           <span>© {new Date().getFullYear()} Placement Cell. All rights reserved.</span>
-          <a className="text-sm">Developed By Divyanshu Sharma</a>
+          <a className="text-sm">Developed By Placement Team</a>
         </div>
       </footer>
     </div>

@@ -327,7 +327,13 @@ export async function logout() {
 
 
 
-export async function registerStudents(studentData:{name:string,email:string,rollNumber:string, universityRollNo:string, eventName:string,branch:string, phoneNumber:string}) {
+export async function registerStudents(studentData:{name:string,email:string,rollNumber:string, universityRollNo:string, eventName:string,branch:string, phoneNumber:string,
+  //new gagan
+   cgpa: string,  
+  back: string,
+  summary: string,
+  //new  end 
+}) {
   try {
     await connectToDatabase();
     
