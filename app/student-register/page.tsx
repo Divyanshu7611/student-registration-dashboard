@@ -52,7 +52,13 @@ const formSchema = z.object({
     // new gagan
       cgpa: z.string().min(1, { message: "CGPA is required" }),
       back: z.string().min(1, { message: "Back count is required" }),
-      summary: z.string().min(10, { message: "Summary must be at least 10 characters" }),
+      summary: z.string().min(1, { message: "This field is required" }),
+        clubs: z.string().min(1, { message: "Clubs field is required" }),
+
+         aim: z.string().min(2, { message: "Aim is required" }),
+  believe: z.string().min(2, { message: "This field is required" }),
+  expect: z.string().min(2, { message: "This field is required" }),
+  domain: z.array(z.string()).min(1, { message: "Select at least one domain" }),
      // new end 
 });
 
@@ -88,6 +94,12 @@ export default function RegisterPage() {
        cgpa: "",           
     back: "",           
     summary: "", 
+     clubs: "",
+
+     aim: "",
+    believe: "",
+    expect: "",
+    domain: [],
     //new  end
     },
   });
@@ -367,14 +379,103 @@ export default function RegisterPage() {
                   name="summary"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Summary</FormLabel>
+                      <FormLabel>Why should we have you in PTP ?</FormLabel>
                       <FormControl>
-                        <Input placeholder="Why should we have you in PTP ?" {...field} />
+                        <Input placeholder="" {...field} />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
                   )}
                 />
+
+                 <FormField
+                  control={form.control}
+                  name="clubs"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel >Active in which Clubs? (Write NONE if not active in any )</FormLabel>
+                      <FormControl>
+                        <Input placeholder="" {...field} />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+
+
+                
+
+                <FormField
+  control={form.control}
+  name="domain"
+  render={({ field }) => (
+    <FormItem>
+      <FormLabel>Select your preferred domain(s)</FormLabel>
+      <div className="grid grid-cols-2 gap-2">
+        {["Management","Graphic Designer","Video Editing","Photography","Content Writer","HR HEAD"].map((domain) => (
+          <label key={domain} className="flex items-center space-x-2">
+            <input
+              type="checkbox"
+              value={domain}
+              checked={field.value?.includes(domain)}
+              onChange={(e) => {
+                if (e.target.checked) {
+                  field.onChange([...(field.value || []), domain]);
+                } else {
+                  field.onChange(field.value?.filter((d) => d !== domain));
+                }
+              }}
+            />
+            <span>{domain}</span>
+          </label>
+        ))}
+      </div>
+      <FormMessage />
+    </FormItem>
+  )}
+/>
+
+  
+               <FormField
+                  control={form.control}
+                  name="aim"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>What is your aim ?</FormLabel>
+                      <FormControl>
+                        <Input placeholder="" {...field} />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+               <FormField
+                  control={form.control}
+                  name="believe"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Do you believe joining the PTP will lead to placement opportunity?</FormLabel>
+                      <FormControl>
+                        <Input placeholder="" {...field} />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+               <FormField
+                  control={form.control}
+                  name="expect"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>What do you expect from PTP?</FormLabel>
+                      <FormControl>
+                        <Input placeholder="" {...field} />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+
 {/* new  end  */}
                 <Button
                   type="submit"

@@ -332,9 +332,15 @@ export async function registerStudents(studentData:{name:string,email:string,rol
    cgpa: string,  
   back: string,
   summary: string,
+   clubs: string,
+
+    aim: string,
+  believe: string,
+  expect: string,
+  domain: string[],
   //new  end 
-}) {
-  try {
+}) { 
+  try { 
     await connectToDatabase();
     
     // Check if user already exists

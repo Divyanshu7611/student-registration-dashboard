@@ -13,6 +13,12 @@ export interface IStudent extends Document {
    cgpa: string,
   back: string,
   summary:string,
+  clubs: string;
+
+  aim: string;
+believe: string;
+expect: string;
+domain: string[];
   //new end 
   qrCode: string;
   attendance: { 
@@ -84,6 +90,34 @@ summary: {
   required: true,
   trim: true,
 },
+clubs: {
+  type: String,
+  required: true,
+  trim: true,
+},
+
+
+aim: {
+  type: String,
+  required: true,
+  trim: true,
+},
+believe: {
+  type: String,
+  required: true,
+  trim: true,
+},
+expect: {
+  type: String,
+  required: true,
+  trim: true,
+},
+domain: {
+  type: [String],
+  required: true,
+  default: [],
+},
+
 //new end
     qrCode: {
       type: String,
