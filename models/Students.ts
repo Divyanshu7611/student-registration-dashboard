@@ -9,6 +9,17 @@ export interface IStudent extends Document {
   branch: string;
   year: string;
   phoneNumber: string;
+   //new  start gagan
+   cgpa: string,
+  back: string,
+  summary:string,
+  clubs: string;
+
+  aim: string;
+believe: string;
+expect: string;
+domain: string[];
+  //new end 
   qrCode: string;
   attendance: { 
     date: Date;
@@ -63,6 +74,51 @@ const StudentSchema = new Schema<IStudent>(
       required: [true, 'Please provide phone number'],
       trim: true,
     },
+    //new start gagan
+    cgpa: {
+  type: String,
+  required: true,
+  trim: true,
+},
+back: {
+  type: String,
+  required: true,
+  trim: true,
+},
+summary: {
+  type: String,
+  required: true,
+  trim: true,
+},
+clubs: {
+  type: String,
+  required: true,
+  trim: true,
+},
+
+
+aim: {
+  type: String,
+  required: true,
+  trim: true,
+},
+believe: {
+  type: String,
+  required: true,
+  trim: true,
+},
+expect: {
+  type: String,
+  required: true,
+  trim: true,
+},
+domain: {
+  type: [String],
+  required: true,
+  default: [],
+},
+
+//new end
     qrCode: {
       type: String,
       unique: true,
