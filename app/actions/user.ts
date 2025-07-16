@@ -420,6 +420,16 @@ export async function getStudentByEmail(email: string) {
         rollNumber: user.rollNumber,
         qrCode: user.qrCode,
         attendance: user.attendance,
+
+        //gagan
+        cgpa: user.cgpa,
+    back: user.back,
+    summary: user.summary,
+    clubs: user.clubs,
+    aim: user.aim,
+    believe: user.believe,
+    expect: user.expect,
+    domain: user.domain,
       }
     };
   } catch (error) {
@@ -455,6 +465,15 @@ export async function getStudentById(userId: string) {
         phoneNumber: user.phoneNumber,
         qrCode: user.qrCode,
         attendance: user.attendance,
+        //gagan
+        cgpa: user.cgpa,
+    back: user.back,
+    summary: user.summary,
+    clubs: user.clubs,
+    aim: user.aim,
+    believe: user.believe,
+    expect: user.expect,
+    domain: user.domain,
       }
     };
   } catch (error) {

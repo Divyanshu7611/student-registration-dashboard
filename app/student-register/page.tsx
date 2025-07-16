@@ -415,7 +415,7 @@ export default function RegisterPage() {
   name="domain"
   render={({ field }) => (
     <FormItem>
-      <FormLabel>Select your preferred domain(s)  [MAX:2]</FormLabel>
+      <FormLabel>Select your preferred domain(s)  [ MAX:2 ]</FormLabel>
       <div className="grid grid-cols-2 gap-2">
         {["Management","Graphic Designer","Video Editing","Photography","Content Writer","HR HEAD"].map((domain) => (
           <label key={domain} className="flex items-center space-x-2">
