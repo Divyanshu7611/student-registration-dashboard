@@ -58,7 +58,12 @@ const formSchema = z.object({
          aim: z.string().min(2, { message: "Aim is required" }),
   believe: z.string().min(2, { message: "This field is required" }),
   expect: z.string().min(2, { message: "This field is required" }),
-  domain: z.array(z.string()).min(1, { message: "Select at least one domain" }),
+  // domain: z.array(z.string()).min(1, { message: "Select at least one domain" }),
+  domain: z
+  .array(z.string())
+  .min(1, { message: "Select at least one domain" })
+  .max(2, { message: "You can select up to 2 domains only" }),
+
      // new end 
 });
 
@@ -305,8 +310,8 @@ export default function RegisterPage() {
                           >
                             <option value="">Select an event</option>
 
-                              <option value="CTRL + ALT + DECIDE">
-                                CTRL + ALT + DECIDE
+                              <option value="Core Team Recruitment">
+                                Core Team Recruitment
                               </option>
 
                           </select>
@@ -410,7 +415,7 @@ export default function RegisterPage() {
   name="domain"
   render={({ field }) => (
     <FormItem>
-      <FormLabel>Select your preferred domain(s)</FormLabel>
+      <FormLabel>Select your preferred domain(s)  [ MAX:2 ]</FormLabel>
       <div className="grid grid-cols-2 gap-2">
         {["Management","Graphic Designer","Video Editing","Photography","Content Writer","HR HEAD"].map((domain) => (
           <label key={domain} className="flex items-center space-x-2">
@@ -419,10 +424,15 @@ export default function RegisterPage() {
               value={domain}
               checked={field.value?.includes(domain)}
               onChange={(e) => {
+                const currentValues = field.value || [];
                 if (e.target.checked) {
-                  field.onChange([...(field.value || []), domain]);
+                  // Allow adding only if less than 2 already selected
+                  if (currentValues.length < 2) {
+                    field.onChange([...currentValues, domain]);
+                  }
                 } else {
-                  field.onChange(field.value?.filter((d) => d !== domain));
+                  // Remove if unchecked
+                  field.onChange(currentValues.filter((d) => d !== domain));
                 }
               }}
             />
