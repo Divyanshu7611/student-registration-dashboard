@@ -5,6 +5,7 @@ import { sendMail } from "@/lib/email";
 import { recruiterInvitationTemplate } from "@/mail/InvitationMail";
 
 export async function sendInvitationAction(email: string) {
+    console.log("Sending invitation to:", email);
 
 
   if (!email || !email.includes("@")) {
@@ -31,3 +32,6 @@ export async function sendInvitationAction(email: string) {
     ? { success: true, message: "Email sent successfully" }
     : { success: false, error: result.error || "Failed to send email" };
 }
+
+
+
