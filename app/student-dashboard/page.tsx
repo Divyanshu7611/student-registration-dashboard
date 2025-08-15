@@ -96,8 +96,27 @@ export default function DashboardPage() {
     fetchUser();
   }, [userId, toast]);
 
-  const handleSearch = async () => {
-    if (!email.trim()) {
+useEffect(() => {
+  const emailParam = searchParams.get("email");
+
+  async function fetchFromParams() {
+    if (emailParam) {
+      console.log("Fetching user by email:", emailParam);
+      setLoading(true);
+      await handleSearch(emailParam); // Search by email param
+      setLoading(false);
+    } else {
+      setLoading(false);
+    }
+  }
+
+  fetchFromParams();
+}, [searchParams]);
+
+
+  const handleSearch = async (paramEmail?:string) => {
+     const searchEmail = String(paramEmail || email || "").trim();  // use param if given, else state
+    if (!searchEmail) {
       toast({
         variant: "destructive",
         title: "Error",
@@ -107,7 +126,8 @@ export default function DashboardPage() {
     }
 
     setSearchLoading(true);
-    const result = await getStudentByEmail(email);
+    console.log("Searching for user with email:", searchEmail);
+    const result = await getStudentByEmail(searchEmail);
 
     if (result.success && result.user) {
       setUser(result.user);
@@ -187,7 +207,7 @@ export default function DashboardPage() {
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                 />
-                <Button onClick={handleSearch} disabled={searchLoading}>
+                <Button onClick={() => handleSearch()} disabled={searchLoading}>
                   {searchLoading ? "Searching..." : "Search"}
                 </Button>
               </div>
@@ -436,3 +456,7 @@ export default function DashboardPage() {
     </div>
   );
 }
+function searchUser(emailParam: string) {
+  throw new Error("Function not implemented.");
+}
+

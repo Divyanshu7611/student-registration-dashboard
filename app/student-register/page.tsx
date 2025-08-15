@@ -160,9 +160,9 @@ export default function RegisterPage() {
       <main className="flex-1 container mx-auto px-4 py-8 flex items-center justify-center">
         <Card className="w-full max-w-md">
           <CardHeader>
-            <CardTitle>Register</CardTitle>
-            <CardDescription>
-              Create your account to get your QR code
+            <CardTitle className="text-xl md:text-2xl">Core Team Recruitment</CardTitle>
+            <CardDescription className="text-xs md:text-sm">
+              Register Yourself to get your QR code
             </CardDescription>
           </CardHeader>
           <CardContent>
@@ -417,7 +417,7 @@ export default function RegisterPage() {
     <FormItem>
       <FormLabel>Select your preferred domain(s)  [ MAX:2 ]</FormLabel>
       <div className="grid grid-cols-2 gap-2">
-        {["Management","Graphic Designer","Video Editing","Photography","Content Writer","HR HEAD"].map((domain) => (
+        {["Management","Graphic Designer","Video Editing","Photography","Content Writer","HR HEAD","Web Developer(Next.js Preferred)"].map((domain) => (
           <label key={domain} className="flex items-center space-x-2">
             <input
               type="checkbox"
