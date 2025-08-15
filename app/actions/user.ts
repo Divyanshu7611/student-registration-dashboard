@@ -371,7 +371,7 @@ export async function registerStudents(studentData:{name:string,email:string,rol
     
     await newUser.save();
 
-    const html = registrationTemplate(newUser.name,studentData.rollNumber,studentData.eventName,qrCodeUrl);
+    const html = registrationTemplate(newUser.name,studentData.rollNumber,studentData.eventName,qrCodeUrl, studentData.email);
     const mailResponse = await sendMail({
       to: studentData.email,
       subject: 'Registration Confirmation',
