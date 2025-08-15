@@ -88,9 +88,10 @@
 // }
 
 
-
+"use client"
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
+// import { useRouter } from 'next/router';
 import {
   Card,
   CardContent,
@@ -102,6 +103,8 @@ import {
 import { GraduationCap, User, ShieldCheck } from 'lucide-react';
 
 export default function Home() {
+
+  // const router = useRouter();
   return (
     <div className="min-h-screen bg-background text-foreground flex flex-col">
       <header className="border-b">
@@ -170,6 +173,14 @@ export default function Home() {
               </Link>
             </CardFooter>
           </Card>
+        </div>
+
+        <div>
+          <Link href='/send-mail' className='flex justify-center p-2'>
+          <Button className='max-w-4xl mx-auto mt-5'>
+            Recruiter Invitation
+          </Button>
+          </Link>
         </div>
       </main>
 
