@@ -42,24 +42,21 @@ import { sendMail } from "@/lib/email";
 import { recruiterInvitationTemplate } from "@/mail/InvitationMail";
 
 export async function sendInvitationAction(email: string) {
-  console.log("Sending invitation to:", email);
-
   if (!email || !email.includes("@")) {
     return { success: false, error: "Valid email is required" };
   }
 
   try {
-    // Use public URL instead of file path
-    const brochureUrl = `${process.env.NEXT_PUBLIC_BASE_URL || "https://student-dashboard-sable.vercel.app"}/placement-brochure.pdf`;
+    const brochureUrl =
+      "https://drive.google.com/uc?export=download&id=1hobGe47cf7M_lpKxGOQMf0Rn69WDkB64";
 
     // Fetch file as Buffer
     const response = await fetch(brochureUrl);
     if (!response.ok) {
-      throw new Error(`Failed to fetch brochure from ${brochureUrl}`);
+      throw new Error(`Failed to fetch brochure from Google Drive`);
     }
     const brochureBuffer = Buffer.from(await response.arrayBuffer());
 
-    // Send email with attachment
     const result = await sendMail({
       to: email,
       subject: "Invitation for Campus Placement Drive - RTU Kota 2026 Batch",
@@ -67,7 +64,7 @@ export async function sendInvitationAction(email: string) {
       attachments: [
         {
           filename: "RTU_Placement_Brochure.pdf",
-          content: brochureBuffer, // Use buffer instead of path
+          content: brochureBuffer,
           contentType: "application/pdf",
         },
       ],
@@ -76,8 +73,7 @@ export async function sendInvitationAction(email: string) {
     return result.success
       ? { success: true, message: "Email sent successfully" }
       : { success: false, error: result.error || "Failed to send email" };
-
-  } catch (err:any) {
+  } catch (err: any) {
     console.error("Error sending invitation:", err);
     return { success: false, error: err.message };
   }
