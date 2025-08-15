@@ -35,15 +35,18 @@
 
 import nodemailer from 'nodemailer';
 
+type MailAttachment = {
+  filename?: string;
+  path?: string;
+  content?: string | Buffer; // Allow sending file content directly
+  contentType?: string;
+};
+
 interface MailOptions {
   to: string;
   subject: string;
   html: string;
-  attachments?: {
-    filename: string;
-    path: string;
-    contentType?: string;
-  }[];
+  attachments?: MailAttachment[];
 }
 
 export const sendMail = async ({ to, subject, html, attachments = [] }: MailOptions) => {
