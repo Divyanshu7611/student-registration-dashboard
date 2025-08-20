@@ -222,9 +222,11 @@ export default function RegisterPage() {
                           <option value="EE">EE</option>
                           <option value="IT">IT</option>
                           <option value="PCE">PCE</option>
-                          <option value="PE">IT</option>
+                          <option value="PE">PE</option>
                           <option value="AE">AE</option>
                           <option value="EIC">EIC</option>
+                          <option value="CHE">CHE</option>
+                          <option value="P&I">P&I</option>
                           <option value="Other">Other</option>
                         </select>
                       </FormControl>
@@ -370,7 +372,7 @@ export default function RegisterPage() {
                   name="back"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>No. of Active Backs </FormLabel>
+                      <FormLabel>No. of Active Backlogs </FormLabel>
                       <FormControl>
                         <Input placeholder="" {...field} />
                       </FormControl>
@@ -415,7 +417,7 @@ export default function RegisterPage() {
   name="domain"
   render={({ field }) => (
     <FormItem>
-      <FormLabel>Select your preferred domain(s)  [ MAX:2 ]</FormLabel>
+      <FormLabel>Select your preferred domain(s)  [MAX:2]</FormLabel>
       <div className="grid grid-cols-2 gap-2">
         {["Management","Graphic Designer","Video Editing","Photography","Content Writer","HR HEAD","Web Developer(Next.js Preferred)"].map((domain) => (
           <label key={domain} className="flex items-center space-x-2">
