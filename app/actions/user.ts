@@ -481,3 +481,85 @@ export async function getStudentById(userId: string) {
     return { success: false, error: 'Failed to fetch user' };
   }
 }
+
+// aditya changes
+export const getAllRecruitments = async () => {
+  try {
+    await connectToDatabase();
+    const students = await Students.find({}).sort({ createdAt: -1 });
+
+    return {
+      success: true,
+      students: students.map((user) => ({
+        id: user._id.toString(),
+        name: user.name,
+        email: user.email,
+        rollNumber: user.rollNumber,
+        branch: user.branch,
+        universityRollNo: user.universityRollNo,
+        year: user.year,
+        eventName: user.eventName,
+        phoneNumber: user.phoneNumber,
+        qrCode: user.qrCode,
+        attendance: user.attendance,
+        cgpa: user.cgpa,
+        back: user.back,
+        summary: user.summary,
+        clubs: user.clubs,
+        aim: user.aim,
+        believe: user.believe,
+        expect: user.expect,
+        domain: user.domain,
+        review: user.review?.marks ?? 0,
+  comment: user.review?.comment ?? "",
+  roundOneAttendance: user.roundOneAttendance,
+  roundTwoAttendance: user.roundTwoAttendance,
+  roundOneQualified: user.roundOneQualified,
+  roundTwoQualified: user.roundTwoQualified,
+      }))
+    };
+  } catch (error) {
+    console.error("Error fetching students:", error);
+    return { success: false, error: "Failed to fetch students" };
+  }
+};
+
+interface ReviewData {
+  studentId: string;
+  review?: number;
+  comment?: string;
+  roundOneAttendance?: boolean;
+  roundTwoAttendance?:boolean;
+  roundOneQualified?:boolean;
+  roundTwoQualified?: boolean;
+}
+
+export const review = async( data:ReviewData)=>{
+    try {
+      await connectToDatabase();
+      const students = await Students.findByIdAndUpdate(data.studentId,{
+         review:{
+           marks:data.review,
+           comment:data.comment
+         },
+         
+         roundOneAttendance:data.roundOneAttendance,
+         roundTwoAttendance:data.roundTwoAttendance,
+         roundOneQualified:data.roundOneQualified,
+         roundTwoQualified:data.roundTwoQualified,
+
+      },
+
+      {new:true}
+    )
+
+    if(!students){
+       return {success:false, error:"student not found"}
+    }
+
+    return {success:true, students}
+    } catch (error) {
+      console.error("Error reviewing student:", error);
+    return { success: false, error: "Failed to review student" };
+    }
+}

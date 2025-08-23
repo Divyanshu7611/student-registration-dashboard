@@ -9,25 +9,39 @@ export interface IStudent extends Document {
   branch: string;
   year: string;
   phoneNumber: string;
-   //new  start gagan
-   cgpa: string,
-  back: string,
-  summary:string,
-  clubs: string;
 
+  cgpa: string;
+  back: string;
+  summary: string;
+  clubs: string;
   aim: string;
-believe: string;
-expect: string;
-domain: string[];
-  //new end 
+  believe: string;
+  expect: string;
+  domain: string[];
+
   qrCode: string;
+
   attendance: { 
     date: Date;
     present: boolean;
   }[];
+
+  //  New fields for review //aditya
+  
+    review: number;       // marks out of 10
+    comment: string;
+  
+
+  //  New fields for rounds
+  roundOneAttendance?: boolean;
+  roundTwoAttendance?: boolean;
+  roundOneQualified?: boolean;
+  roundTwoQualified?: boolean;
+
   createdAt: Date;
   updatedAt: Date;
 }
+
 
 const StudentSchema = new Schema<IStudent>(
   {
@@ -49,93 +63,63 @@ const StudentSchema = new Schema<IStudent>(
       unique: true,
       trim: true,
     },
-    universityRollNo: {  // New field
+    universityRollNo: { 
       type: String,
       required: [true, 'Please provide university roll number'],
       trim: true,
     },
-    eventName: {  // New field
+    eventName: {  
       type: String,
       required: [true, 'Please provide event name'],
       trim: true,
     },
-    branch: {  // New field
+    branch: {  
       type: String,
       required: [true, 'Please provide branch'],
       trim: true,
     },
-    year: {  // New field
+    year: {  
       type: String,
       required: [true, 'Please provide year'],
       trim: true,
     },
-    phoneNumber: {  // New field
+    phoneNumber: {  
       type: String,
       required: [true, 'Please provide phone number'],
       trim: true,
     },
+
     //new start gagan
-    cgpa: {
-  type: String,
-  required: true,
-  trim: true,
-},
-back: {
-  type: String,
-  required: true,
-  trim: true,
-},
-summary: {
-  type: String,
-  required: true,
-  trim: true,
-},
-clubs: {
-  type: String,
-  required: true,
-  trim: true,
-},
+    cgpa: { type: String, required: true, trim: true },
+    back: { type: String, required: true, trim: true },
+    summary: { type: String, required: true, trim: true },
+    clubs: { type: String, required: true, trim: true },
+    aim: { type: String, required: true, trim: true },
+    believe: { type: String, required: true, trim: true },
+    expect: { type: String, required: true, trim: true },
+    domain: { type: [String], required: true, default: [] },
+    //new end
 
-
-aim: {
-  type: String,
-  required: true,
-  trim: true,
-},
-believe: {
-  type: String,
-  required: true,
-  trim: true,
-},
-expect: {
-  type: String,
-  required: true,
-  trim: true,
-},
-domain: {
-  type: [String],
-  required: true,
-  default: [],
-},
-
-//new end
     qrCode: {
       type: String,
       unique: true,
-      required: [true, 'QR Code is required'],  // Made required
+      required: [true, 'QR Code is required'],
     },
-    attendance:[
+
+    attendance: [
       {
-        date: {
-          type: Date,
-          required: true,
-        },
-        present: {
-          type: Boolean,
-          default: true,
-        },
+        date: { type: Date, required: true },
+        present: { type: Boolean, default: true },
       },
     ],
+
+    //  New fields Aditya
+    review:{type:Number, default:0},
+    comment:{type:String},
+    roundOneAttendance: { type: Boolean, default: false },
+    roundTwoAttendance: { type: Boolean, default: false },
+    roundOneQualified: { type: Boolean, default: false },
+    roundTwoQualified: { type: Boolean, default: false },
   },
   {
     timestamps: true,
