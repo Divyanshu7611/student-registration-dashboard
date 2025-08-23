@@ -510,8 +510,8 @@ export const getAllRecruitments = async () => {
         believe: user.believe,
         expect: user.expect,
         domain: user.domain,
-        review: user.review?.marks ?? 0,
-  comment: user.review?.comment ?? "",
+        review: user.review?? null,
+  comment: user.comment ?? "",
   roundOneAttendance: user.roundOneAttendance,
   roundTwoAttendance: user.roundTwoAttendance,
   roundOneQualified: user.roundOneQualified,
@@ -538,10 +538,8 @@ export const review = async( data:ReviewData)=>{
     try {
       await connectToDatabase();
       const students = await Students.findByIdAndUpdate(data.studentId,{
-         review:{
-           marks:data.review,
-           comment:data.comment
-         },
+         review: data.review ?? null,
+    comment: data.comment ?? "",
          
          roundOneAttendance:data.roundOneAttendance,
          roundTwoAttendance:data.roundTwoAttendance,
@@ -564,11 +562,3 @@ export const review = async( data:ReviewData)=>{
     }
 }
 
-export const filterStudentByBranch =()=>{
-
-}
-
-
-export const filterStudentByDoamin =()=>{
-  
-}

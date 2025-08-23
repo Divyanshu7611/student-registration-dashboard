@@ -1,4 +1,5 @@
 import mongoose, { Schema, Document } from 'mongoose';
+import { string } from 'zod';
 
 export interface IStudent extends Document {
   name: string;
@@ -28,8 +29,8 @@ export interface IStudent extends Document {
 
   //  New fields for review //aditya
   
-    review: number;       // marks out of 10
-    comment: string;
+    review?:number | null;
+    comment:string | ""
   
 
   //  New fields for rounds
@@ -114,8 +115,8 @@ const StudentSchema = new Schema<IStudent>(
     ],
 
     //  New fields Aditya
-    review:{type:Number, default:0},
-    comment:{type:String},
+    review: { type: Number, default: null },  // marks only
+comment: { type: String, default: "" },
     roundOneAttendance: { type: Boolean, default: false },
     roundTwoAttendance: { type: Boolean, default: false },
     roundOneQualified: { type: Boolean, default: false },

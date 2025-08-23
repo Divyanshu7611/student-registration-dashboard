@@ -69,23 +69,30 @@ export default function AdminReviewPage() {
   };
 
   const handleUpdate = async (student: Student) => {
-    const data = {
-      studentId: student.id,
-      review: student.review,
-      comment: student.comment,
-      roundOneAttendance: student.roundOneAttendance,
-      roundTwoAttendance: student.roundTwoAttendance,
-      roundOneQualified: student.roundOneQualified,
-      roundTwoQualified: student.roundTwoQualified,
-    };
-    const res = await reviewStudent(data);
-    if (res.success) {
-      toast({ title: "Success", description: "Student updated successfully" });
-      fetchStudents();
-    } else {
-      toast({ variant: "destructive", title: "Error", description: res.error });
-    }
+  const data = {
+    studentId: student.id,
+    review: student.review,
+    comment: student.comment,
+    roundOneAttendance: student.roundOneAttendance,
+    roundTwoAttendance: student.roundTwoAttendance,
+    roundOneQualified: student.roundOneQualified,
+    roundTwoQualified: student.roundTwoQualified,
   };
+
+  const res = await reviewStudent(data);
+
+  if (res.success) {
+    toast({ title: "Success", description: "Student updated successfully" });
+
+    // ✅ Update only this student in state, don’t reset everything
+    setStudents((prev) =>
+      prev.map((s) => (s.id === student.id ? { ...s, ...data } : s))
+    );
+  } else {
+    toast({ variant: "destructive", title: "Error", description: res.error });
+  }
+};
+
 
   const handleInputChange = (id: string, field: string, value: any) => {
     setStudents((prev) =>
@@ -192,20 +199,22 @@ export default function AdminReviewPage() {
                   </td>
 
                   <td className="px-2 py-1 border">
-                    <Input
-                      type="number"
-                      min={0}
-                      max={10}
-                      value={student.review ?? ""}
-                      onChange={(e) =>
-                        handleInputChange(
-                          student.id,
-                          "review",
-                          Number(e.target.value)
-                        )
-                      }
-                    />
-                  </td>
+  <Input
+    type="number"
+    min={0}
+    max={10}
+    value={student.review ?? ""}
+    onChange={(e) => {
+      const value = e.target.value;
+      handleInputChange(
+        student.id,
+        "review",
+        value === "" ? "" : Number(value)
+      );
+    }}
+  />
+</td>
+
 
                   <td className="px-2 py-1 border">
                     <Input
