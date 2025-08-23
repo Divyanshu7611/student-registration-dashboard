@@ -563,3 +563,12 @@ export const review = async( data:ReviewData)=>{
     return { success: false, error: "Failed to review student" };
     }
 }
+
+export const filterStudentByBranch =()=>{
+
+}
+
+
+export const filterStudentByDoamin =()=>{
+  
+}
