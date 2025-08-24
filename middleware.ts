@@ -9,7 +9,7 @@ export function middleware(request: NextRequest) {
   const path = request.nextUrl.pathname;
 
   // Define protected routes
-  const isAdminRoute = path.startsWith('/admin');
+  const isAdminRoute = path.startsWith('/admin') ;
 
   // Get the token from cookies
   const token = request.cookies.get('auth-token')?.value;
