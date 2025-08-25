@@ -15,6 +15,19 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogDescription,
+} from "@/components/ui/dialog";
+
+import {
+  ScrollBar, 
+  ScrollArea
+} from "@/components/ui/scroll-area";
+
 
 interface Student {
   id: string;
@@ -48,6 +61,9 @@ export default function AdminReviewPage() {
   const { toast } = useToast();
   const [students, setStudents] = useState<Student[]>([]);
   const [loading, setLoading] = useState(true);
+  const [selectedStudent, setSelectedStudent] = useState<Student | null>(null);
+const [open, setOpen] = useState(false);
+
 
   // filters
   const [branchFilter, setBranchFilter] = useState("");
@@ -190,9 +206,15 @@ export default function AdminReviewPage() {
             <tbody>
               {filteredStudents.map((student) => (
                 <tr key={student.id} className="border-b">
-                  <td className="px-2 py-1 border">{student.name}</td>
-                  <td className="px-2 py-1 border">{student.rollNumber}</td>
-                  <td className="px-2 py-1 border">{student.email}</td>
+                  <td className="px-2 py-1 border" onClick={()=>{setSelectedStudent(student);
+                    setOpen(true);
+                  }}>{student.name}</td>
+                  <td className="px-2 py-1 border" onClick={()=>{setSelectedStudent(student)
+                    setOpen(true)
+                  }}>{student.rollNumber}</td>
+                  <td className="px-2 py-1 border" onClick={()=>{setSelectedStudent(student);
+                    setOpen(true);
+                  }}>{student.email}</td>
                   <td className="px-2 py-1 border">{student.branch}</td>
                   <td className="px-2 py-1 border">
                     {student.domain.join(", ")}
@@ -271,6 +293,115 @@ export default function AdminReviewPage() {
           </table>
         </div>
       )}
+
+
+<Dialog open={open} onOpenChange={setOpen}>
+  <DialogContent className="p-8 bg-gray-950 rounded-3xl shadow-[0_20px_50px_-12px_rgba(0,0,0,0.7)] max-h-[85vh] overflow-y-auto custom-scrollbar w-full max-w-5xl">
+  {selectedStudent && (
+    <div className="space-y-8 text-gray-200">
+      {/* Header Section with Name and Roll Number */}
+      <div className="text-center">
+        <h3 className="text-4xl font-extrabold tracking-tight text-white">{selectedStudent.name}</h3>
+        <p className="text-lg text-gray-400 mt-2 font-medium">{selectedStudent.rollNumber}</p>
+      </div>
+
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+        {/* Left Column: Core Details */}
+        <div className="p-6 bg-gray-800/60 backdrop-blur-sm rounded-2xl shadow-xl border border-gray-700 space-y-4">
+          <h4 className="text-xl font-bold text-gray-100 border-b border-gray-700 pb-2 mb-4">Core Information</h4>
+          
+          <div className="space-y-3 text-gray-300">
+            <div className="flex justify-between items-center">
+              <span className="font-semibold text-gray-50">Branch:</span>
+              <span>{selectedStudent.branch}</span>
+            </div>
+            <div className="flex justify-between items-center">
+              <span className="font-semibold text-gray-50">Year:</span>
+              <span>{selectedStudent.year}</span>
+            </div>
+            <div className="flex justify-between items-center">
+              <span className="font-semibold text-gray-50">University Roll No:</span>
+              <span>{selectedStudent.universityRollNo}</span>
+            </div>
+            <div className="flex justify-between items-center">
+              <span className="font-semibold text-gray-50">CGPA:</span>
+              <span className="font-bold text-green-400">{selectedStudent.cgpa}</span>
+            </div>
+            <div className="flex justify-between items-center">
+              <span className="font-semibold text-gray-50">Backlogs:</span>
+              <span className="font-bold text-red-400">{selectedStudent.back}</span>
+            </div>
+            <div className="flex justify-between items-center">
+              <span className="font-semibold text-gray-50">Email:</span>
+              <a href={`mailto:${selectedStudent.email}`} className="text-blue-400 hover:underline">{selectedStudent.email}</a>
+            </div>
+            <div className="flex justify-between items-center">
+              <span className="font-semibold text-gray-50">Phone:</span>
+              <span>{selectedStudent.phoneNumber}</span>
+            </div>
+          </div>
+        </div>
+
+        {/* Right Column: Domains and Aspiration */}
+        <div className="p-6 bg-gray-800/60 backdrop-blur-sm rounded-2xl shadow-xl border border-gray-700 space-y-6">
+          <h4 className="text-xl font-bold text-gray-100 border-b border-gray-700 pb-2 mb-4">Aspirations & Interests</h4>
+          
+          <div>
+            <h5 className="text-md font-semibold text-gray-300 mb-2">Domains</h5>
+            <div className="flex flex-wrap gap-2">
+              {selectedStudent.domain.map(d => (
+                <span key={d} className="px-4 py-1 text-sm font-medium bg-purple-900 text-purple-300 rounded-full">{d}</span>
+              ))}
+            </div>
+          </div>
+          
+          <div>
+            <h5 className="text-md font-semibold text-gray-300 mb-2">Clubs</h5>
+            <p className="text-sm text-gray-400">{selectedStudent.clubs}</p>
+          </div>
+          
+          <div>
+            <h5 className="text-md font-semibold text-gray-300 mb-2">Aim</h5>
+            <p className="text-sm text-gray-400">{selectedStudent.aim}</p>
+          </div>
+        </div>
+      </div>
+      
+      {/* Bottom Section: Summary & Beliefs */}
+      <div className="p-6 bg-gray-800/60 backdrop-blur-sm rounded-2xl shadow-xl border border-gray-700 space-y-6">
+        <h4 className="text-xl font-bold text-gray-100 border-b border-gray-700 pb-2 mb-4">Why should we have you in PTP?</h4>
+        <p className="text-gray-300 leading-relaxed">{selectedStudent.summary}</p>
+        
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 pt-4 border-t border-gray-700">
+          <div>
+            <h5 className="text-md font-semibold text-gray-300 mb-2">What I Believe</h5>
+            <p className="text-gray-400">{selectedStudent.believe}</p>
+          </div>
+          <div>
+            <h5 className="text-md font-semibold text-gray-300 mb-2">What I Expect</h5>
+            <p className="text-gray-400">{selectedStudent.expect}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  )}
+</DialogContent>
+</Dialog>
+
+
+
     </div>
   );
+
+
+
+
+
+
+
+
 }
+
+
+
+

@@ -562,3 +562,10 @@ export const review = async( data:ReviewData)=>{
     }
 }
 
+export const getstudentdetail = (data:ReviewData)=>{
+       try {
+         
+       } catch (error) {
+        
+       }
+}
