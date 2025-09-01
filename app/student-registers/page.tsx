@@ -1,3 +1,4 @@
+// to restore student registration form page change foldername to student-register
 "use client";
 
 import { useEffect, useState } from "react";
