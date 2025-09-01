@@ -257,7 +257,10 @@ useEffect(() => {
                 <CardContent>
                   <dl className="space-y-3 text-sm">
                     <div>
-                      <dt className="font-medium text-muted-foreground">
+                       <a href="https://chat.whatsapp.com/Hbdo8PoHe0u6ZY0KhOyZAx" className="hover:underline bg-gray-200 px-3 py-2 mb-2 rounded-lg text-black font-semibold" target="_blank" rel="noopener noreferrer">
+              Join Whastapp Group
+            </a>
+                      <dt className="font-medium text-muted-foreground mt-3">
                         Name
                       </dt>
                       <dd className="text-lg font-semibold">{user.name}</dd>
@@ -317,6 +320,8 @@ useEffect(() => {
                   {/* new gagan  */}
 
           <div>
+
+           
       <dt className="font-medium text-muted-foreground mt-2">CGPA</dt>
       <dd className="truncate">{user.cgpa}</dd>
     </div>
