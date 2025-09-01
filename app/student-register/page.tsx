@@ -157,7 +157,7 @@ export default function RegisterPage() {
         </div>
       </header>
 
-      <main className="flex-1 container mx-auto px-4 py-8 flex items-center justify-center">
+      {/* <main className="flex-1 container mx-auto px-4 py-8 flex items-center justify-center">
         <Card className="w-full max-w-md">
           <CardHeader>
             <CardTitle className="text-xl md:text-2xl">Core Team Recruitment</CardTitle>
@@ -272,19 +272,7 @@ export default function RegisterPage() {
                   )}
                 />
 
-                {/* <FormField
-                  control={form.control}
-                  name="eventName"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Event Name</FormLabel>
-                      <FormControl>
-                        <Input placeholder="Aptitude Test" {...field} />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                /> */}
+               
 
                 <FormField
                   control={form.control}
@@ -352,7 +340,7 @@ export default function RegisterPage() {
                   )}
                 />
 
-{/* new gagan */}
+
   <FormField
                   control={form.control}
                   name="cgpa"
@@ -488,7 +476,7 @@ export default function RegisterPage() {
                   )}
                 />
 
-{/* new  end  */}
+
                 <Button
                   type="submit"
                   className="w-full"
@@ -511,7 +499,15 @@ export default function RegisterPage() {
             </p>
           </CardFooter>
         </Card>
-      </main>
+      </main> */}
+
+                <main className="flex-1 container mx-auto px-4 py-8 flex items-center justify-center">
+        <Card className="w-full max-w-lg md:max-w-xl lg:max-w-2xl text-center">
+          <h1 className="text-xl font-bold">Oop's, It's too Late!!</h1>
+          <h3 className="text-lg font-semibold">Registration Closed</h3>
+        </Card>
+
+                 </main>
 
       <footer className="border-t py-6">
         <div className="container mx-auto px-4 text-center text-sm text-muted-foreground flex-col flex items-center">
